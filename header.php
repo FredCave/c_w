@@ -40,6 +40,8 @@
 	<script>
 		// FIX IE CONSOLE ERRORS
 		if (!window.console) console = {log: function() {}}; 
+		// SET ROOT
+		var ROOT = '<?= get_bloginfo("url"); ?>';
 	</script>
 
 	<?php wp_head(); ?>

@@ -1,0 +1,60 @@
+#wpadminbar {
+	display: none !important;
+}
+
+/****************************************
+
+	GENERAL
+
+****************************************/
+
+body {
+	font-family: courier, sans-serif;
+	font-size: 1.1em;	
+	// font-weight: 300;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+	padding: 4px 2px;
+}
+
+a:hover {
+	border-bottom: 1px solid black;
+}
+
+/****************************************
+
+	MENU
+
+****************************************/
+
+#menu {
+	// border: 1px solid red;
+	width: 100%;
+	text-align: center;
+	margin-top: 16px;
+	text-transform: lowercase;
+	li {
+		// border: 1px solid blue;
+		display: inline-block;
+		margin: 0 12px;
+	}
+}
+
+/****************************************
+
+	EDITOR
+
+****************************************/
+
+#editor_save {
+	border: 1px solid black;
+	position: fixed;
+	bottom: 48px;
+	right: 48px;
+	background-color: rgba( 255, 255, 255, 0.6 );
+	padding: 8px 12px 12px 12px;
+	cursor: pointer;
+}

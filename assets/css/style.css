@@ -1,17 +1,61 @@
+/* line 1, style.scss */
 #wpadminbar {
-    display: none !important;
+  display: none !important;
 }
 
-/************************************************
+/****************************************
 
-    CSS RESET
+	GENERAL
 
-************************************************/
+****************************************/
+/* line 11, style.scss */
+body {
+  font-family: courier, sans-serif;
+  font-size: 1.1em;
+}
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } /* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block; } body {line-height: 1; } ol, ul {list-style: none; } blockquote, q {quotes: none; } blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none; } table {border-collapse: collapse; border-spacing: 0; }
+/* line 17, style.scss */
+a {
+  text-decoration: none;
+  color: black;
+  padding: 4px 2px;
+}
 
-/************************************************
+/* line 23, style.scss */
+a:hover {
+  border-bottom: 1px solid black;
+}
 
-    GENERAL
+/****************************************
 
-************************************************/
+	MENU
+
+****************************************/
+/* line 33, style.scss */
+#menu {
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+  text-transform: lowercase;
+}
+/* line 39, style.scss */
+#menu li {
+  display: inline-block;
+  margin: 0 12px;
+}
+
+/****************************************
+
+	EDITOR
+
+****************************************/
+/* line 52, style.scss */
+#editor_save {
+  border: 1px solid black;
+  position: fixed;
+  bottom: 48px;
+  right: 48px;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 8px 12px 12px 12px;
+  cursor: pointer;
+}
