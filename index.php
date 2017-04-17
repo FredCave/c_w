@@ -9,7 +9,7 @@
 
 	<?php 
 	// EDITOR FUNCTION
-	lh_editor();
+	include("includes/editor.php"); ?>
 	?>
 
 <?php get_footer(); ?>

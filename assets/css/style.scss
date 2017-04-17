@@ -10,7 +10,8 @@
 
 body {
 	font-family: courier, sans-serif;
-	font-size: 1.1em;	
+	font-size: 1.1em;
+	overflow-x: hidden;	
 	// font-weight: 300;
 }
 
@@ -22,6 +23,31 @@ a {
 
 a:hover {
 	border-bottom: 1px solid black;
+}
+
+section {
+	border: 2px dashed gray;
+	position: relative;
+	min-height: 100vh; // TMP
+}
+
+section .image {
+	position: absolute;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.ui-wrapper {
+	// border: 1px solid green;
+	overflow: visible !important;
+}
+
+.ui-resizable-se {
+	// border: 1px solid blue;
+	width: 24px;
+	height: 24px;
+	float: right;
+	background-color: gray;
 }
 
 /****************************************
@@ -49,12 +75,27 @@ a:hover {
 
 ****************************************/
 
-#editor_save {
-	border: 1px solid black;
+#editor_bar {
+	border: 1px solid red;
 	position: fixed;
 	bottom: 48px;
-	right: 48px;
-	background-color: rgba( 255, 255, 255, 0.6 );
+	left: 5%;
+	width: 90%;
+	font-size: 1em;
+	text-align: right;
+}
+
+#editor_bar > div {
+	display: inline-block;
 	padding: 8px 12px 12px 12px;
+}
+
+#editor_save {
+	border: 1px solid black;
+	background-color: rgba( 255, 255, 255, 0.6 );	
 	cursor: pointer;
 }
+
+
+
+

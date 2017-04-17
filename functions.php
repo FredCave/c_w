@@ -22,8 +22,19 @@ function enqueue_lola_scripts() {
 	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
 // //    wp_register_script( 'jquery', get_template_directory_uri() . '/js/_jquery.js');
 	wp_enqueue_script( 'jquery' );  
-    
+ 
+    wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), true);
     wp_enqueue_script('all-scripts', get_template_directory_uri() . '/js/scripts.min.js', array('jquery'), true);
+
+	// LOCALIZE DATA FOR SCRIPT – AUTHENTIFICATION FOR REST API
+	wp_localize_script( 'all-scripts', 'LH_SCRIPT', array(
+			'root' => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'success' => __( 'Images saved.', 'your-text-domain' ),
+			'failure' => __( 'Error. Images not saved.', 'your-text-domain' ),
+			'current_user_id' => get_current_user_id()
+		)
+	);
 
 }
 add_action('wp_enqueue_scripts', 'enqueue_lola_scripts');
@@ -49,10 +60,11 @@ function create_post_types() {
 // ADD CUSTOM IMAGE SIZES
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'extralarge', 1200, 1200 );
+add_image_size( 'ultralarge', 1600, 1600 );
 
 // IMAGE OBJECT
 
-function lh_image_object( $image, $title ) {
+function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left, $saved_z_index ) {
     if( !empty($image) ): 
         $width = $image['sizes'][ 'thumbnail-width' ];
         $height = $image['sizes'][ 'thumbnail-height' ];
@@ -60,29 +72,23 @@ function lh_image_object( $image, $title ) {
         $medium = $image['sizes'][ "medium" ]; // 600
         $large = $image['sizes'][ "large" ]; // 900
         $extralarge = $image['sizes'][ "extralarge" ]; // 1200
+        $ultralarge = $image['sizes'][ "ultralarge" ]; // 1200
         $id = $image["id"];
-        // DEFAULT IS FULL WIDTH
-        if ( $height / $width >= 0.5 && $height / $width < 1 ) {
-            $class = "two-thirds";
-        } else if ( $height / $width >= 1 ) {
-            $class = "one-third";
-            // PORTRAIT MODE
-            $thumb = $image['sizes'][ "medium" ];
-            $medium = $image['sizes'][ "large" ];
-            $large = $image['sizes'][ "extralarge" ]; 
-        } else {
-            $class = "full-width"; 
-        }
+
         echo "<img id='" . $id . "' 
-        	class='" . $class . " ' 
+        	class='image' 
             alt='Lola Hakimian – " . $title . "' 
-            width='" . $width . "' 
-            height='" . $height . "' 
+            data-width='" . $saved_width . "' 
+            data-ratio='" . $height / $width . "' 
+            data-top='" . $saved_top . "' 
+            data-left='" . $saved_left . "' 
+            data-zindex='" . $saved_z_index . "' 
             data-thm='" . $thumb . "' 
             data-med='" . $medium . "' 
             data-lrg='" . $large . "' 
             data-xlg='" . $extralarge . "' 
-            src=' " . $thumb . "' />";
+            data-ulg='" . $ultralarge . "' 
+            src='' />";
     endif;
 }
 
@@ -93,13 +99,17 @@ function lh_get_projects () {
     if ( $projects_query->have_posts() ) :
         while ( $projects_query->have_posts() ) : $projects_query->the_post(); 
     		if ( have_rows("images") ) : ?>
-			<section id="<?php the_ID(); ?>">
+			<section id="<?php the_ID(); ?>" data-title="<?php the_title(); ?>">
 				<ul>
 					<?php 
 					$i = 1;
 					while ( have_rows("images") ) : the_row();
-						$image = get_sub_field("image");
-						lh_image_object( $image, get_the_title() );
+						$image 			= get_sub_field("image");
+						$saved_width 	= get_sub_field("saved_width");
+						$saved_top 		= get_sub_field("saved_top");
+						$saved_left		= get_sub_field("saved_left");
+						$saved_z_index	= get_sub_field("saved_z_index");
+						lh_image_object( $image, get_the_title(), $saved_width, $saved_top, $saved_left, $saved_z_index );
 						$i++;
 					endwhile; ?>
 				</ul>
@@ -108,18 +118,6 @@ function lh_get_projects () {
 			endif;
         endwhile; //  POST WHILE
     endif;    
-}
-
-// EDITOR FUNCTION
-
-function lh_editor () {
-
-	if ( is_user_logged_in() ) { ?>
-
-		<buttton id="editor_save">Save</buttton>
-
-	<?php }
-
 }
 
 ?>

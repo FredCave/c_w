@@ -2,13 +2,19 @@ var Editor = {
 
 	winW: $(window).width(),
 
+	winH: $(window).height(),
+
+	currentProject: "",
+
 	init: function () {
 
 		console.log("Editor.init");
 
 		// CHECK IF EDITOR FUNCTION ENABLED
-		if ( $("#editor_save").length ) {
+		if ( $("#editor_bar").length ) {
+
 			this.bindEvents();
+
 		}
 
 	}, 
@@ -21,60 +27,256 @@ var Editor = {
 
 		$("#editor_save").on("click", function (){
 
-			// GET STATE OF EACH IMAGE
-			self.imagesSave();
+			// GET STATE OF IMAGES
+			self.imagesSave( self.currentProject );
+
+		});
+
+		// ON SCROLL DOWN: SHOW CURRENT PROJECT
+		$(window).on("scroll", _.throttle( function(){
+			var winScroll = $(window).scrollTop();
+			self.updateCurrentProject( winScroll );
+		}, 500 ));
+
+		$(window).on("resize", _.throttle( function(){
+			self.sectionMarkers();
+		},1000 ));
+
+	},
+
+	sectionMarkers: function () {
+
+		console.log("Editor.sectionMarkers");
+
+		// LOOP THROUGH PROJECTS
+		$("section").each( function(){
+
+			var thisTop = $(this).offset().top,
+				thisBottom = thisTop + $(this).height();
+
+			// console.log( 53, thisTop, thisBottom );
+
+			$(this).attr({
+				"data-top" : Math.ceil(thisTop),
+				"data-bottom" : Math.ceil(thisBottom)
+			});
 
 		});
 
 	},
 
-	imagesSave: function () {
+	updateCurrentProject: function ( scrollTop ) {
+
+		// console.log("Editor.updateCurrentProject", scrollTop );
+
+		var self = this;
+
+		// LOOP THROUGH PROJECTS
+		$("section").each( function(){
+
+			if ( ( scrollTop + ( Editor.winH / 3 ) ) > $(this).attr("data-top") && scrollTop <= $(this).attr("data-bottom") ) {
+
+				$("#editor_current").text( $(this).attr("data-title") );
+				self.currentProject = $(this).attr("id");
+
+			}
+
+		});		
+
+	},
+
+	imagesSave: function ( id ) {
 
 		console.log("Editor.imagesSave");
 
-		// var self = this;
+		// PROJECT BY PROJECT
 
-		// var images = [];
+		var self = this;
 
-		// // LOOP THROUGH IMAGES
-		// $("section img").each( function(){
+		// GET PROJECT JSON FROM SERVER
 
-		// 	var img = {
-		// 		id: 		$(this).attr("id"),
-		// 		width: 		( $(this).width() / self.winW * 100 ).toFixed(2), // WIDTH AS PERC OF WRAPPER (WIN)
-		// 		// height: 	( $(this).height() / img.width ).toFixed(2), // HEIGHT AS PERC OF WIDTH
-		// 		top:		( $(this).offset().top / self.winW * 100 ).toFixed(2), // TOP AS PERC OF WRAPPER (WIN)
-		// 		left: 		( $(this).offset().left / self.winW * 100 ).toFixed(2), // LEFT AS PERC OF WRAPPER (WIN)
-		// 		zIndex: 	$(this).css("z-index")
-		// 	}
+		console.log( 98, LH_SCRIPT.root + 'acf/v3/projects/' + id );
 
-		// 	// console.log( 58, img );
-
-		// 	images.push(img);
-
-		// });
-
-		// console.log( 57, images );
-
-		var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}};
-		
 		$.ajax({
-			url: ROOT + '/wp-json/wp/v2/posts/90',
-			method: 'POST',
-			data: {
-				"title" : "New Title"
-			}, 
-			// crossDomain: true,
-			// beforeSend: function ( xhr ) {
-			// 	xhr.setRequestHeader( 'Authorization', 'Basic ' + Base64.encode( 'lola_admin:Jackandbill0!lh' ) );
-   //  		},
-			success: function ( data ) {
-				
-				console.log( "Updated.", data );
+            method: "GET",
+            url: LH_SCRIPT.root + 'acf/v3/projects/' + id,
+            success : function( response ) { 
+                
+                postImages = response.acf.images;                
 
-			}
+                console.log( 105, response );
+
+                // LOOP THROUGH IMAGES
+                var arrayLength = postImages.length;
+				for (var i = 0; i < arrayLength; i++) {
+				    // FIND IMG ON PAGE
+				    var postImg = postImages[i].image,
+				    	pageImg = $("#" + postImg.ID).parent(".ui-wrapper");
+				    
+				    console.log( 114, pageImg.position().top, pageImg.position().left );
+
+				    // STORE STATE IN IMAGE OBJECT
+				    postImages[i].saved_width		= parseFloat( ( pageImg.width() / self.winW * 100 ).toFixed(2) ) || 0,
+				    postImages[i].saved_top			= parseFloat( ( pageImg.position().top / self.winW * 100 ).toFixed(2) ) || 0, // TOP AS PERC OF WRAPPER (WIN)
+					postImages[i].saved_left		= parseFloat( ( pageImg.position().left / self.winW * 100 ).toFixed(2) ) || 0, // LEFT AS PERC OF WRAPPER (WIN)
+					postImages[i].saved_z_index 	= parseFloat( pageImg.css("z-index") ) || 1;
+				}
+
+				var data = {
+					"fields": {
+						"images": postImages
+					}
+				}
+
+				// UPDATE POST ON SERVER
+		        $.ajax({
+		            method: "PUT",
+		            url: LH_SCRIPT.root + 'acf/v3/projects/' + id,
+		            data: data,
+		            dataType: 'json',
+		            beforeSend: function ( xhr ) {
+		                xhr.setRequestHeader( 'X-WP-Nonce', LH_SCRIPT.nonce );
+		            },
+		            success : function( response ) {
+		                console.log( "Success", response );
+		                // alert( LH_SCRIPT.success );
+		            },
+		            fail : function( response ) {
+		                console.log( "Fail", response );
+		                alert( LH_SCRIPT.failure );
+		            }
+
+		        });
+
+            },
+            fail : function( response ) {
+                console.log( response );
+            }
+
+        });
+
+	}
+
+}
+
+var Projects = {
+
+	init: function () {
+
+		console.log("Projects.init");
+
+		this.loadImages();
+
+	},
+
+	imgCalc: function ( img ) {
+
+		console.log("Projects.imgCalc", img );
+
+		// GET SAVED VALUES
+		var width 	= parseFloat( $(img[0]).attr("data-width") ),
+			ratio  	= parseFloat( $(img[0]).attr("data-ratio") ),
+			top 	= parseFloat( $(img[0]).attr("data-top") ),
+			left	= parseFloat( $(img[0]).attr("data-left") ),
+			z_index = parseFloat( $(img[0]).attr("data-zindex") ),
+			src,
+			position;
+
+		// SRC BASED ON WIDTH
+		if ( width < 300 ) { // THUMB
+			src = $(img[0]).attr("data-thm");
+		} else if ( width > 300 && width <= 600 ) { // MEDIUM
+			src = $(img[0]).attr("data-med");
+		} else if ( width > 600 && width <= 900 ) { // LARGE
+			src = $(img[0]).attr("data-lrg");
+		} else if ( width > 900 && width <= 1200 ) { // EXTRALARGE
+			src = $(img[0]).attr("data-xlg");
+		} else { // ULTRALARGE
+			src = $(img[0]).attr("data-ulg");
+		}
+
+		// FALLBACK
+		// console.log( 196, top );
+		if ( isNaN(top) ) {
+			position = "relative";
+		} else {
+			position = "absolute";			
+		}
+
+		// MAKE RESIZABLE
+		$(img[0]).resizable({
+			aspectRatio: true
 		});
 
+		// SET CSS BASED ON SAVED VALUES
+		$(img[0]).attr( "src", src ).parent(".ui-wrapper").css({
+			"position"	: position, 
+			"width" 	: width + "%",
+			"height" 	: width * ratio + "vw",
+			"top" 		: top + "%",
+			"left"		: left + "%",
+			"z-index"	: z_index
+		}).draggable();
+
+		// console.log( 213, width * ratio );
+
+	},
+
+	loadImages: function () {
+
+		console.log("Projects.loadImages");
+
+		var self = this;
+
+		var sectionIndex = 0;
+
+		function sectionLoad () {
+
+			// console.log("sectionLoad");
+
+			// GET NO. OF IMAGES
+			var currSec = $("section").eq(sectionIndex), 
+				imgs = $(this).find("img").length,
+				i = 0;
+			// LOOP THROUGH IMGS, WAIT TO LOAD BEFORE PROCEDING
+
+			function imgLoad () {
+
+				// console.log("imgLoad");
+				
+				self.imgCalc( currSec.find("img").eq(i) );
+				
+				currSec.find("img").eq(i).on("load", function (){
+					// console.log("Loaded");
+					i++;
+					if ( currSec.find("img").eq(i).length ) {
+						imgLoad();
+					} else {
+						sectionIndex++;
+
+						// IF NEXT: LOAD NEXT
+						if ( $("section").eq(sectionIndex).length ) {
+							
+							sectionLoad();
+						
+						} else {
+							
+							// RECORD SECTION MARKERS
+							Editor.sectionMarkers();
+
+						}
+
+					}
+				});
+
+			}	
+
+			imgLoad();			
+
+		}
+
+		// TRIGGER
+		sectionLoad();
 
 	}
 
@@ -85,5 +287,6 @@ $(document).on( "ready", function (){
 	console.log("Ready");
 
 	Editor.init();
+	Projects.init();
 
 });
