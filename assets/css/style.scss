@@ -4,18 +4,29 @@
 
 /****************************************
 
+	CSS RESET
+
+****************************************/
+
+a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+/****************************************
+
 	GENERAL
 
 ****************************************/
 
 body {
-	font-family: courier, sans-serif;
-	font-size: 1.1em;
+	font-family: "Suisse Works", serif;
+	font-size: 1em;
+	line-height: 1.6;
 	overflow-x: hidden;	
+	// padding-top: 48px;
 	// font-weight: 300;
 }
 
 a {
+	// border: 1px solid yellow;
 	text-decoration: none;
 	color: black;
 	padding: 4px 2px;
@@ -26,15 +37,25 @@ a:hover {
 }
 
 section {
-	border: 2px dashed gray;
+	// border: 2px dashed #ccc;
 	position: relative;
 	min-height: 100vh; // TMP
+	overflow: hidden;	
+	.image {
+		position: absolute;
+		width: 100% !important;
+		height: 100% !important;
+		opacity: 0;
+		transition: opacity 1s;
+		backface-visibility: hidden;
+	}
 }
 
-section .image {
-	position: absolute;
-	width: 100% !important;
-	height: 100% !important;
+.selected {
+	box-shadow: 0px 0px 10px rgba(0,0,255,0.8) !important;
+	.ui-resizable-se {
+		display: block !important;
+	}
 }
 
 .ui-wrapper {
@@ -44,10 +65,22 @@ section .image {
 
 .ui-resizable-se {
 	// border: 1px solid blue;
-	width: 24px;
-	height: 24px;
+	margin-top: 8px;
+	width: 18px;
+	height: 18px;
 	float: right;
-	background-color: gray;
+	// background-color: gray;
+	background: url("assets/img/resize_arrow.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	display: none !important;
+}
+
+#page_wrapper {
+	padding-top: 48px;
+	padding-bottom: 25vh;
+	width: 95%;
+	margin-left: 2.5%;
 }
 
 /****************************************
@@ -56,16 +89,93 @@ section .image {
 
 ****************************************/
 
+#menu_bg {
+	// border: 1px solid red;
+	position: fixed;
+	z-index: 99;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	background: linear-gradient(white, transparent); 
+}
+
 #menu {
 	// border: 1px solid red;
 	width: 100%;
 	text-align: center;
-	margin-top: 16px;
-	text-transform: lowercase;
+	margin-top: 24px;
+	// text-transform: lowercase;
+	position: fixed;
+	z-index: 999;
+	top: 0;
+    left: 0;
+	padding: 0;
 	li {
 		// border: 1px solid blue;
 		display: inline-block;
-		margin: 0 12px;
+		margin: 0 16px;
+		padding: 2px;
+	}
+	li:hover, .current-page {
+		border-bottom: 1px solid black;	
+	}
+}
+
+/****************************************
+
+	LIGHTBOX
+
+****************************************/
+
+#lightbox_bg {
+	position: fixed;
+	z-index: 999;
+	background-color: rgba( 0, 0, 0, 0.8 );
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+#lightbox_close {
+	position: fixed;
+    top: 36px;
+    right: 36px;
+    z-index: 999;
+    cursor: pointer;
+    display: none;
+}
+
+#lightbox_wrapper {
+	// border: 1px solid red;
+	position: fixed;
+	z-index: 9999;
+	width: 67%;
+	height: 67%;
+	top: 16.7%;
+	left: 16.7%;
+	text-align: center;
+	display: none;
+	.image {
+		max-height: 100%;
+		max-width: 100%;
+		position: absolute;
+		cursor: pointer;
+	}
+	.landscape {
+		width: 100%;
+		height: auto;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+	}
+	.portrait {
+		height: 100%;
+		width: auto;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 }
 
@@ -76,26 +186,129 @@ section .image {
 ****************************************/
 
 #editor_bar {
-	border: 1px solid red;
+	// border: 1px solid red;
 	position: fixed;
+	z-index: 99;
 	bottom: 48px;
 	left: 5%;
 	width: 90%;
 	font-size: 1em;
 	text-align: right;
+	pointer-events: none;
+	// display: none;
+	div {
+		display: inline-block;
+		padding: 8px 12px 10px 12px;
+		pointer-events: auto;
+		display: none;
+	}
+	#editor_toggle {
+		float: left;
+		display: inline-block;
+	}
 }
 
-#editor_bar > div {
-	display: inline-block;
-	padding: 8px 12px 12px 12px;
-}
-
-#editor_save {
+#editor_save, #editor_reset, #editor_toggle {
 	border: 1px solid black;
-	background-color: rgba( 255, 255, 255, 0.6 );	
+	background-color: rgba( 255, 255, 255, 0.6 );
+	transition: background-color 1s ease-in-out;	
 	cursor: pointer;
 }
 
+/****************************************
 
+	INFO
+
+****************************************/
+
+.info_wrapper {
+	// border: 1px solid blue;
+	font-family: "Franklin Gothic FS", sans-serif;
+	.column {
+		width: 45%;
+		margin-right: 5%;
+		display: inline-block;
+		vertical-align: top;
+		p {
+			margin: 0 0 16px 0;
+		}
+	}
+	.column:last-child {
+		margin-right: 0%;
+	}
+}
+
+/****************************************
+
+	INSTALLATIONS
+
+****************************************/
+
+.installation_row {
+	// border: 1px solid blue;
+	width: 67%;
+	margin-left: 16.7%;
+	margin-bottom: 48px;
+	text-align: center;
+	img {
+		width: 100%;
+		height: auto;
+	}
+	.portrait {
+		height: 67vw;
+		width: auto;
+	}
+	.caption {
+		display: block;
+		width: 100%;
+		font-family: "Franklin Gothic FS", sans-serif;
+	}
+}
+
+/****************************************
+
+	COMMANDES
+
+****************************************/
+
+.commandes_item {
+	margin-bottom: 48px;
+	h1, .commandes_intro {
+		margin-left: 25%;
+		margin-bottom: 36px;
+		width: 50%;		
+	}
+}
+
+.commandes_images {
+	// border: 1px solid orange;
+	margin-left: 0;
+	width: 100%;
+	li {
+		// border: 1px solid purple;
+		display: inline-block;
+		vertical-align: top;
+		width: 17.5%;
+		height: 17.5vw;
+		margin-right: 2.5%;
+		margin-bottom: 12px;
+		text-align: center;
+		img {
+			width: 100%;
+			height: auto;
+		}
+		.landscape {
+			margin-top: 50%;
+			transform: translateY(-50%);
+		}
+		.portrait {
+			height: 100%;
+			width: auto;
+		}
+	}
+	li:nth-child(5n) {
+		margin-right: 0%;
+	}
+}
 
 

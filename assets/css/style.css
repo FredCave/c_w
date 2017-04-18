@@ -5,53 +5,123 @@
 
 /****************************************
 
-	GENERAL
+	CSS RESET
 
 ****************************************/
 /* line 11, style.scss */
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* line 11, style.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* line 11, style.scss */
 body {
-  font-family: courier, sans-serif;
-  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* line 11, style.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 11, style.scss */
+blockquote, q {
+  quotes: none;
+}
+
+/* line 11, style.scss */
+blockquote:after, blockquote:before, q:after, q:before {
+  content: '';
+  content: none;
+}
+
+/* line 11, style.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/****************************************
+
+	GENERAL
+
+****************************************/
+/* line 19, style.scss */
+body {
+  font-family: "Suisse Works", serif;
+  font-size: 1em;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* line 18, style.scss */
+/* line 28, style.scss */
 a {
   text-decoration: none;
   color: black;
   padding: 4px 2px;
 }
 
-/* line 24, style.scss */
+/* line 35, style.scss */
 a:hover {
   border-bottom: 1px solid black;
 }
 
-/* line 28, style.scss */
+/* line 39, style.scss */
 section {
-  border: 2px dashed gray;
   position: relative;
   min-height: 100vh;
+  overflow: hidden;
 }
-
-/* line 34, style.scss */
+/* line 44, style.scss */
 section .image {
   position: absolute;
   width: 100% !important;
   height: 100% !important;
+  opacity: 0;
+  transition: opacity 1s;
+  backface-visibility: hidden;
 }
 
-/* line 40, style.scss */
+/* line 54, style.scss */
+.selected {
+  box-shadow: 0px 0px 10px rgba(0, 0, 255, 0.8) !important;
+}
+/* line 56, style.scss */
+.selected .ui-resizable-se {
+  display: block !important;
+}
+
+/* line 61, style.scss */
 .ui-wrapper {
   overflow: visible !important;
 }
 
-/* line 45, style.scss */
+/* line 66, style.scss */
 .ui-resizable-se {
-  width: 24px;
-  height: 24px;
+  margin-top: 8px;
+  width: 18px;
+  height: 18px;
   float: right;
-  background-color: gray;
+  background: url("assets/img/resize_arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: none !important;
+}
+
+/* line 79, style.scss */
+#page_wrapper {
+  padding-top: 48px;
+  padding-bottom: 25vh;
+  width: 95%;
+  margin-left: 2.5%;
 }
 
 /****************************************
@@ -59,17 +129,98 @@ section .image {
 	MENU
 
 ****************************************/
-/* line 59, style.scss */
+/* line 92, style.scss */
+#menu_bg {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(white, transparent);
+}
+
+/* line 103, style.scss */
 #menu {
   width: 100%;
   text-align: center;
-  margin-top: 16px;
-  text-transform: lowercase;
+  margin-top: 24px;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  padding: 0;
 }
-/* line 65, style.scss */
+/* line 114, style.scss */
 #menu li {
   display: inline-block;
-  margin: 0 12px;
+  margin: 0 16px;
+  padding: 2px;
+}
+/* line 120, style.scss */
+#menu li:hover, #menu .current-page {
+  border-bottom: 1px solid black;
+}
+
+/****************************************
+
+	LIGHTBOX
+
+****************************************/
+/* line 131, style.scss */
+#lightbox_bg {
+  position: fixed;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+/* line 142, style.scss */
+#lightbox_close {
+  position: fixed;
+  top: 36px;
+  right: 36px;
+  z-index: 999;
+  cursor: pointer;
+  display: none;
+}
+
+/* line 151, style.scss */
+#lightbox_wrapper {
+  position: fixed;
+  z-index: 9999;
+  width: 67%;
+  height: 67%;
+  top: 16.7%;
+  left: 16.7%;
+  text-align: center;
+  display: none;
+}
+/* line 161, style.scss */
+#lightbox_wrapper .image {
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+/* line 167, style.scss */
+#lightbox_wrapper .landscape {
+  width: 100%;
+  height: auto;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+/* line 174, style.scss */
+#lightbox_wrapper .portrait {
+  height: 100%;
+  width: auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /****************************************
@@ -77,26 +228,139 @@ section .image {
 	EDITOR
 
 ****************************************/
-/* line 78, style.scss */
+/* line 188, style.scss */
 #editor_bar {
-  border: 1px solid red;
   position: fixed;
+  z-index: 99;
   bottom: 48px;
   left: 5%;
   width: 90%;
   font-size: 1em;
   text-align: right;
+  pointer-events: none;
 }
-
-/* line 88, style.scss */
-#editor_bar > div {
+/* line 199, style.scss */
+#editor_bar div {
   display: inline-block;
-  padding: 8px 12px 12px 12px;
+  padding: 8px 12px 10px 12px;
+  pointer-events: auto;
+  display: none;
+}
+/* line 205, style.scss */
+#editor_bar #editor_toggle {
+  float: left;
+  display: inline-block;
 }
 
-/* line 93, style.scss */
-#editor_save {
+/* line 211, style.scss */
+#editor_save, #editor_reset, #editor_toggle {
   border: 1px solid black;
   background-color: rgba(255, 255, 255, 0.6);
+  transition: background-color 1s ease-in-out;
   cursor: pointer;
+}
+
+/****************************************
+
+	INFO
+
+****************************************/
+/* line 224, style.scss */
+.info_wrapper {
+  font-family: "Franklin Gothic FS", sans-serif;
+}
+/* line 227, style.scss */
+.info_wrapper .column {
+  width: 45%;
+  margin-right: 5%;
+  display: inline-block;
+  vertical-align: top;
+}
+/* line 232, style.scss */
+.info_wrapper .column p {
+  margin: 0 0 16px 0;
+}
+/* line 236, style.scss */
+.info_wrapper .column:last-child {
+  margin-right: 0%;
+}
+
+/****************************************
+
+	INSTALLATIONS
+
+****************************************/
+/* line 247, style.scss */
+.installation_row {
+  width: 67%;
+  margin-left: 16.7%;
+  margin-bottom: 48px;
+  text-align: center;
+}
+/* line 253, style.scss */
+.installation_row img {
+  width: 100%;
+  height: auto;
+}
+/* line 257, style.scss */
+.installation_row .portrait {
+  height: 67vw;
+  width: auto;
+}
+/* line 261, style.scss */
+.installation_row .caption {
+  display: block;
+  width: 100%;
+  font-family: "Franklin Gothic FS", sans-serif;
+}
+
+/****************************************
+
+	COMMANDES
+
+****************************************/
+/* line 274, style.scss */
+.commandes_item {
+  margin-bottom: 48px;
+}
+/* line 276, style.scss */
+.commandes_item h1, .commandes_item .commandes_intro {
+  margin-left: 25%;
+  margin-bottom: 36px;
+  width: 50%;
+}
+
+/* line 283, style.scss */
+.commandes_images {
+  margin-left: 0;
+  width: 100%;
+}
+/* line 287, style.scss */
+.commandes_images li {
+  display: inline-block;
+  vertical-align: top;
+  width: 17.5%;
+  height: 17.5vw;
+  margin-right: 2.5%;
+  margin-bottom: 12px;
+  text-align: center;
+}
+/* line 296, style.scss */
+.commandes_images li img {
+  width: 100%;
+  height: auto;
+}
+/* line 300, style.scss */
+.commandes_images li .landscape {
+  margin-top: 50%;
+  transform: translateY(-50%);
+}
+/* line 304, style.scss */
+.commandes_images li .portrait {
+  height: 100%;
+  width: auto;
+}
+/* line 309, style.scss */
+.commandes_images li:nth-child(5n) {
+  margin-right: 0%;
 }

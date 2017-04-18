@@ -55,6 +55,19 @@ function create_post_types() {
         'menu_position' => 5
         )
     );
+    register_post_type( 'commandes',
+    array(
+        'labels' => array(
+            'name' => __( 'Commandes' )
+        ),
+        'public' => true,
+        'show_in_rest' => true,
+        // 'taxonomies' => array('category'),
+        'has_archive' => true,
+        'supports' => array('editor','title'),
+        'menu_position' => 6
+        )
+    );
 }
 
 // ADD CUSTOM IMAGE SIZES
@@ -74,9 +87,13 @@ function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left,
         $extralarge = $image['sizes'][ "extralarge" ]; // 1200
         $ultralarge = $image['sizes'][ "ultralarge" ]; // 1200
         $id = $image["id"];
+        $class = "landscape";
+        if ( $height > $width ) {
+        	$class = "portrait";	
+        }
 
         echo "<img id='" . $id . "' 
-        	class='image' 
+        	class='image " . $class . "' 
             alt='Lola Hakimian – " . $title . "' 
             data-width='" . $saved_width . "' 
             data-ratio='" . $height / $width . "' 
@@ -88,7 +105,7 @@ function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left,
             data-lrg='" . $large . "' 
             data-xlg='" . $extralarge . "' 
             data-ulg='" . $ultralarge . "' 
-            src='' />";
+            src='" . $ultralarge . "' />";
     endif;
 }
 
@@ -99,7 +116,7 @@ function lh_get_projects () {
     if ( $projects_query->have_posts() ) :
         while ( $projects_query->have_posts() ) : $projects_query->the_post(); 
     		if ( have_rows("images") ) : ?>
-			<section id="<?php the_ID(); ?>" data-title="<?php the_title(); ?>">
+			<section id="<?php the_ID(); ?>" data-title="<?php the_title(); ?>" class="image_collection">
 				<ul>
 					<?php 
 					$i = 1;
@@ -118,6 +135,16 @@ function lh_get_projects () {
 			endif;
         endwhile; //  POST WHILE
     endif;    
+}
+
+// MENU: GET CURRENT
+
+function lh_get_current ( $_page ) {
+
+    if ( is_page( $page = $_page ) ) {
+        echo "class='current-page'";
+    }
+
 }
 
 ?>

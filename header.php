@@ -59,3 +59,5 @@
 </head>
 
 <body>
+
+	<?php include("includes/menu.php"); ?>
