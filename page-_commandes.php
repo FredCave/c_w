@@ -2,6 +2,19 @@
 
 	<div id="page_wrapper" class="commandes">
 
+		<!-- PORTFOLIO DOWNLOAD -->
+		<?php if ( get_field( "info_commandes_portfolio", 107 ) ) { ?>
+			<div id="info_portfolio" class="commandes_item">
+				<div class="commandes_intro">
+					Télécharger portfolio :
+					<?php $portfolio = get_field( "info_portfolio", 107 ); ?>
+					<a target="_blank" href="<?php echo $portfolio["url"]; ?>">
+						<?php echo $portfolio["filename"]; ?>
+					</a>
+				</div>
+			</div>
+		<?php } ?>
+
 		<?php 
 		$commande_query = new WP_Query("post_type=commandes");
 		if ( $commande_query->have_posts() ) :

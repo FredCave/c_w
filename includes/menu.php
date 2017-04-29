@@ -12,7 +12,7 @@
 		<a href="<?php bloginfo('url'); ?>/installations">Installations</a>
 	</li>
 	<li <?php lh_get_current("commandes"); ?> >
-		<a href="<?php bloginfo('url'); ?>/commandes">Commandes</a>
+		<a href="<?php bloginfo('url'); ?>/_commandes">Commandes</a>
 	</li>
 	
 </ul>

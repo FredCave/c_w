@@ -80,6 +80,21 @@ var Editor = {
 		$(".selected").removeClass("selected");
 		click.parent(".ui-wrapper").addClass("selected");
 
+		// IF RELATIVE: STORE CURRENT VALUES
+		// FOR EACH TO PREVENT OTHER RELATIVES SHIFTING
+		$(".selected").parents("ul").find(".collection_item").each( function(){
+
+			$(this).attr( "data-top", $(this).position().top );
+			$(this).attr( "data-left", $(this).position().left );
+			$(this).css({
+				"top" 		: parseInt( $(this).attr( "data-top") ),
+				"left" 		: parseInt( $(this).attr( "data-left") )
+			});
+
+		});
+		
+		$(".selected").parents("ul").find(".collection_item").css("position","absolute");
+
 		var current = parseInt( $(".selected").css( "z-index") ) || 1;
 		$("#editor_zindex").text( "Index = " + current );
 
@@ -134,6 +149,20 @@ var Editor = {
 			"top" : "0",
 			"display" : "inline-block"
 		});
+		setTimeout( function(){
+			currSec.find(".ui-wrapper").each( function(){
+				// GET CURRENT VALUES
+				var thisTop = $(this).offset().top,
+					thisLeft = $(this).offset().left,
+					thisWidth = $(this).width();
+				$(this).css({
+					"position" : "absolute",
+					"top" : thisTop,
+					"left" : thisLeft,
+					"width" : thisWidth
+				});		
+			});			
+		}, 500 );
 
 	},
 
@@ -147,16 +176,12 @@ var Editor = {
 
 		// GET PROJECT JSON FROM SERVER
 
-		console.log( 98, LH_SCRIPT.root + 'acf/v3/projects/' + id );
-
 		$.ajax({
             method: "GET",
             url: LH_SCRIPT.root + 'acf/v3/projects/' + id,
             success : function( response ) { 
                 
                 postImages = response.acf.images;                
-
-                console.log( 105, response );
 
                 // LOOP THROUGH IMAGES
                 var arrayLength = postImages.length;
@@ -165,8 +190,6 @@ var Editor = {
 				    var postImg = postImages[i].image,
 				    	pageImg = $("#" + postImg.ID).parent(".ui-wrapper");
 				    
-				    console.log( 114, pageImg.position().top, pageImg.position().left );
-
 				    // STORE STATE IN IMAGE OBJECT
 				    postImages[i].saved_width		= parseFloat( ( pageImg.width() / self.winW * 100 ).toFixed(2) ) || 0,
 				    postImages[i].saved_top			= parseFloat( ( pageImg.position().top / self.winW * 100 ).toFixed(2) ) || 0, // TOP AS PERC OF WRAPPER (WIN)

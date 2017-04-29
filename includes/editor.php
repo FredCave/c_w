@@ -2,7 +2,7 @@
 
 // EDITOR FUNCTION
 
-if ( is_user_logged_in() ) { ?>
+// if ( is_user_logged_in() ) { ?>
 
 	<div id="editor_bar">
 
@@ -18,6 +18,6 @@ if ( is_user_logged_in() ) { ?>
 
 	</div>
 
-<?php }
+<?php // }
 
 ?>

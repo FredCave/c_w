@@ -2,6 +2,29 @@
 	display: none !important;
 }
 
+@mixin bg_gradient () {
+	background: rgba(255,255,255,0);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,0.53) 47%, rgba(237,237,237,0) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,0.53)), color-stop(100%, rgba(237,237,237,0)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,0.53) 47%, rgba(237,237,237,0) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,0.53) 47%, rgba(237,237,237,0) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,0.53) 47%, rgba(237,237,237,0) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,0.53) 47%, rgba(237,237,237,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+}
+
+@mixin translateX () {
+	-webkit-transform: translateX(-50%); 
+		-ms-transform: translateX(-50%); 
+	  		transform: translateX(-50%);
+}
+
+@mixin translateY () {
+	-webkit-transform: translateY(-50%); 
+		-ms-transform: translateY(-50%); 
+	  		transform: translateY(-50%);
+}
+
 /****************************************
 
 	CSS RESET
@@ -12,12 +35,40 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 /****************************************
 
+	FONTS
+
+****************************************/
+
+@font-face {
+    font-family: 'Suisse';
+    src: url('assets/fonts/suisseworks-book-webfont.eot');
+    src: url('assets/fonts/suisseworks-book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/suisseworks-book-webfont.woff2') format('woff2'),
+         url('assets/fonts/suisseworks-book-webfont.woff') format('woff'),
+         url('assets/fonts/suisseworks-book-webfont.svg#suisse_worksbook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Frank';
+    src: url('assets/fonts/franklingothic-book-webfont.eot');
+    src: url('assets/fonts/franklingothic-book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/franklingothic-book-webfont.woff2') format('woff2'),
+         url('assets/fonts/franklingothic-book-webfont.woff') format('woff'),
+         url('assets/fonts/franklingothic-book-webfont.svg#suisse_worksbook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/****************************************
+
 	GENERAL
 
 ****************************************/
 
 body {
-	font-family: "Suisse Works", serif;
+	font-family: "Suisse", "Suisse Works",  serif;
 	font-size: 1em;
 	line-height: 1.6;
 	overflow-x: hidden;	
@@ -77,7 +128,7 @@ section {
 }
 
 #page_wrapper {
-	padding-top: 48px;
+	padding-top: 12.5vh;
 	padding-bottom: 25vh;
 	width: 95%;
 	margin-left: 2.5%;
@@ -97,24 +148,25 @@ section {
 	left: 0;
 	width: 100%;
 	height: 100px;
-	background: linear-gradient(white, transparent); 
+	@include bg_gradient();
 }
 
 #menu {
 	// border: 1px solid red;
-	width: 100%;
+	width: 50%;
 	text-align: center;
 	margin-top: 24px;
-	// text-transform: lowercase;
 	position: fixed;
 	z-index: 999;
 	top: 0;
-    left: 0;
+    left: 25%;
 	padding: 0;
+	display: flex;
+	justify-content: space-between;
 	li {
 		// border: 1px solid blue;
 		display: inline-block;
-		margin: 0 16px;
+		margin: 0px;
 		padding: 2px;
 	}
 	li:hover, .current-page {
@@ -153,8 +205,8 @@ section {
 	position: fixed;
 	z-index: 9999;
 	width: 67%;
-	height: 67%;
-	top: 16.7%;
+	height: 80%;
+	top: 10%;
 	left: 16.7%;
 	text-align: center;
 	display: none;
@@ -163,19 +215,20 @@ section {
 		max-width: 100%;
 		position: absolute;
 		cursor: pointer;
+		transition: width 0.5s, height 0.5s, opacity 1s;
 	}
 	.landscape {
 		width: 100%;
 		height: auto;
 		top: 50%;
 		left: 0;
-		transform: translateY(-50%);
+		@include translateY();
 	}
 	.portrait {
 		height: 100%;
 		width: auto;
 		left: 50%;
-		transform: translateX(-50%);
+		@include translateX();
 	}
 }
 
@@ -223,12 +276,15 @@ section {
 
 .info_wrapper {
 	// border: 1px solid blue;
-	font-family: "Franklin Gothic FS", sans-serif;
+	font-family: "Frank", "ITC Franklin Gothic Std", sans-serif;
 	.column {
 		width: 45%;
 		margin-right: 5%;
 		display: inline-block;
 		vertical-align: top;
+		div {
+			margin-bottom: 36px;
+		}
 		p {
 			margin: 0 0 16px 0;
 		}
@@ -261,7 +317,7 @@ section {
 	.caption {
 		display: block;
 		width: 100%;
-		font-family: "Franklin Gothic FS", sans-serif;
+		font-family: "Frank", sans-serif;
 	}
 }
 
@@ -271,12 +327,19 @@ section {
 
 ****************************************/
 
+#page_wrapper.commandes {
+	width: 100%;
+	margin-left: 0;
+}
+
 .commandes_item {
 	margin-bottom: 48px;
 	h1, .commandes_intro {
+		// border: 1px solid green;
 		margin-left: 25%;
 		margin-bottom: 36px;
-		width: 50%;		
+		width: 50%;	
+		padding: 4px;	
 	}
 }
 
@@ -291,15 +354,16 @@ section {
 		width: 17.5%;
 		height: 17.5vw;
 		margin-right: 2.5%;
-		margin-bottom: 12px;
+		margin-bottom: 24px;
 		text-align: center;
 		img {
 			width: 100%;
 			height: auto;
+			cursor: pointer;
 		}
 		.landscape {
 			margin-top: 50%;
-			transform: translateY(-50%);
+			@include translateY();
 		}
 		.portrait {
 			height: 100%;

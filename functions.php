@@ -147,4 +147,26 @@ function lh_get_current ( $_page ) {
 
 }
 
+// ACF ROWS
+
+function my_acf_admin_head() {
+    ?>
+    <script type="text/javascript">
+    (function($){
+
+        $(document).ready(function(){
+            
+            $( ".-collapse" ).each(function( index ) {
+              $( this ).click();
+            });
+            
+        });
+
+    })(jQuery);
+    </script>
+    <?php
+}
+
+add_action('acf/input/admin_head', 'my_acf_admin_head');
+
 ?>

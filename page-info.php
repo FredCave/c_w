@@ -16,9 +16,9 @@
 				</div>
 			<?php endif; ?>
 
-			<?php if ( get_field( "info_bio", $post_id ) ) : ?>
-				<div id="info_bio">
-					<?php the_field( "info_bio", $post_id ); ?>
+			<?php if ( get_field( "info_cv", $post_id ) ) : ?>
+				<div id="info_cv">
+					<?php the_field( "info_cv", $post_id ); ?>
 				</div>
 			<?php endif; ?>
 
@@ -37,6 +37,12 @@
 		</div><!-- END OF .COLUMN -->
 
 		<div class="column">
+			<?php if ( get_field( "info_bio", $post_id ) ) : ?>
+				<div id="info_bio">
+					<?php the_field( "info_bio", $post_id ); ?>
+				</div>
+			<?php endif; ?>
+
 			<?php if ( get_field( "info_news", $post_id ) ) : ?>
 				<div id="info_news">
 					<?php

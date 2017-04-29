@@ -1,11 +1,8 @@
-
-### INCLUDE FONT-FACE
-
-### IMAGE SRC SIZES
-
 ########
 PROJECTS
 ########
+
+### TITLES
 
 ### RESIZE SECTION
 	### HOW TO SAVE?
@@ -17,3 +14,8 @@ PROJECTS
 
 ### LIGHTBOX – SCROLL/SWIPE
 
+########
+GENERAL
+########
+
+### MEDIA QUERIES

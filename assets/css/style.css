@@ -8,7 +8,7 @@
 	CSS RESET
 
 ****************************************/
-/* line 11, style.scss */
+/* line 34, style.scss */
 a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
   margin: 0;
   padding: 0;
@@ -17,33 +17,33 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
   vertical-align: baseline;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 body {
   line-height: 1;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 blockquote, q {
   quotes: none;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 blockquote:after, blockquote:before, q:after, q:before {
   content: '';
   content: none;
 }
 
-/* line 11, style.scss */
+/* line 34, style.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -51,36 +51,55 @@ table {
 
 /****************************************
 
+	FONTS
+
+****************************************/
+@font-face {
+  font-family: 'Suisse';
+  src: url("assets/fonts/suisseworks-book-webfont.eot");
+  src: url("assets/fonts/suisseworks-book-webfont.eot?#iefix") format("embedded-opentype"), url("assets/fonts/suisseworks-book-webfont.woff2") format("woff2"), url("assets/fonts/suisseworks-book-webfont.woff") format("woff"), url("assets/fonts/suisseworks-book-webfont.svg#suisse_worksbook") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Frank';
+  src: url("assets/fonts/franklingothic-book-webfont.eot");
+  src: url("assets/fonts/franklingothic-book-webfont.eot?#iefix") format("embedded-opentype"), url("assets/fonts/franklingothic-book-webfont.woff2") format("woff2"), url("assets/fonts/franklingothic-book-webfont.woff") format("woff"), url("assets/fonts/franklingothic-book-webfont.svg#suisse_worksbook") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/****************************************
+
 	GENERAL
 
 ****************************************/
-/* line 19, style.scss */
+/* line 70, style.scss */
 body {
-  font-family: "Suisse Works", serif;
+  font-family: "Suisse", "Suisse Works",  serif;
   font-size: 1em;
   line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* line 28, style.scss */
+/* line 79, style.scss */
 a {
   text-decoration: none;
   color: black;
   padding: 4px 2px;
 }
 
-/* line 35, style.scss */
+/* line 86, style.scss */
 a:hover {
   border-bottom: 1px solid black;
 }
 
-/* line 39, style.scss */
+/* line 90, style.scss */
 section {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
 }
-/* line 44, style.scss */
+/* line 95, style.scss */
 section .image {
   position: absolute;
   width: 100% !important;
@@ -90,21 +109,21 @@ section .image {
   backface-visibility: hidden;
 }
 
-/* line 54, style.scss */
+/* line 105, style.scss */
 .selected {
   box-shadow: 0px 0px 10px rgba(0, 0, 255, 0.8) !important;
 }
-/* line 56, style.scss */
+/* line 107, style.scss */
 .selected .ui-resizable-se {
   display: block !important;
 }
 
-/* line 61, style.scss */
+/* line 112, style.scss */
 .ui-wrapper {
   overflow: visible !important;
 }
 
-/* line 66, style.scss */
+/* line 117, style.scss */
 .ui-resizable-se {
   margin-top: 8px;
   width: 18px;
@@ -116,9 +135,9 @@ section .image {
   display: none !important;
 }
 
-/* line 79, style.scss */
+/* line 130, style.scss */
 #page_wrapper {
-  padding-top: 48px;
+  padding-top: 12.5vh;
   padding-bottom: 25vh;
   width: 95%;
   margin-left: 2.5%;
@@ -129,7 +148,7 @@ section .image {
 	MENU
 
 ****************************************/
-/* line 92, style.scss */
+/* line 143, style.scss */
 #menu_bg {
   position: fixed;
   z-index: 99;
@@ -137,27 +156,36 @@ section .image {
   left: 0;
   width: 100%;
   height: 100px;
-  background: linear-gradient(white, transparent);
+  background: rgba(255, 255, 255, 0);
+  background: -moz-linear-gradient(top, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, white), color-stop(47%, rgba(246, 246, 246, 0.53)), color-stop(100%, rgba(237, 237, 237, 0)));
+  background: -webkit-linear-gradient(top, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
+  background: -o-linear-gradient(top, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
+  background: -ms-linear-gradient(top, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
+  background: linear-gradient(to bottom, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
 }
 
-/* line 103, style.scss */
+/* line 154, style.scss */
 #menu {
-  width: 100%;
+  width: 50%;
   text-align: center;
   margin-top: 24px;
   position: fixed;
   z-index: 999;
   top: 0;
-  left: 0;
+  left: 25%;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
 }
-/* line 114, style.scss */
+/* line 166, style.scss */
 #menu li {
   display: inline-block;
-  margin: 0 16px;
+  margin: 0px;
   padding: 2px;
 }
-/* line 120, style.scss */
+/* line 172, style.scss */
 #menu li:hover, #menu .current-page {
   border-bottom: 1px solid black;
 }
@@ -167,7 +195,7 @@ section .image {
 	LIGHTBOX
 
 ****************************************/
-/* line 131, style.scss */
+/* line 183, style.scss */
 #lightbox_bg {
   position: fixed;
   z-index: 999;
@@ -179,7 +207,7 @@ section .image {
   display: none;
 }
 
-/* line 142, style.scss */
+/* line 194, style.scss */
 #lightbox_close {
   position: fixed;
   top: 36px;
@@ -189,37 +217,42 @@ section .image {
   display: none;
 }
 
-/* line 151, style.scss */
+/* line 203, style.scss */
 #lightbox_wrapper {
   position: fixed;
   z-index: 9999;
   width: 67%;
-  height: 67%;
-  top: 16.7%;
+  height: 80%;
+  top: 10%;
   left: 16.7%;
   text-align: center;
   display: none;
 }
-/* line 161, style.scss */
+/* line 213, style.scss */
 #lightbox_wrapper .image {
   max-height: 100%;
   max-width: 100%;
   position: absolute;
   cursor: pointer;
+  transition: width 0.5s, height 0.5s, opacity 1s;
 }
-/* line 167, style.scss */
+/* line 220, style.scss */
 #lightbox_wrapper .landscape {
   width: 100%;
   height: auto;
   top: 50%;
   left: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 174, style.scss */
+/* line 227, style.scss */
 #lightbox_wrapper .portrait {
   height: 100%;
   width: auto;
   left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
 }
 
@@ -228,7 +261,7 @@ section .image {
 	EDITOR
 
 ****************************************/
-/* line 188, style.scss */
+/* line 241, style.scss */
 #editor_bar {
   position: fixed;
   z-index: 99;
@@ -239,20 +272,20 @@ section .image {
   text-align: right;
   pointer-events: none;
 }
-/* line 199, style.scss */
+/* line 252, style.scss */
 #editor_bar div {
   display: inline-block;
   padding: 8px 12px 10px 12px;
   pointer-events: auto;
   display: none;
 }
-/* line 205, style.scss */
+/* line 258, style.scss */
 #editor_bar #editor_toggle {
   float: left;
   display: inline-block;
 }
 
-/* line 211, style.scss */
+/* line 264, style.scss */
 #editor_save, #editor_reset, #editor_toggle {
   border: 1px solid black;
   background-color: rgba(255, 255, 255, 0.6);
@@ -265,22 +298,26 @@ section .image {
 	INFO
 
 ****************************************/
-/* line 224, style.scss */
+/* line 277, style.scss */
 .info_wrapper {
-  font-family: "Franklin Gothic FS", sans-serif;
+  font-family: "Frank", "ITC Franklin Gothic Std", sans-serif;
 }
-/* line 227, style.scss */
+/* line 280, style.scss */
 .info_wrapper .column {
   width: 45%;
   margin-right: 5%;
   display: inline-block;
   vertical-align: top;
 }
-/* line 232, style.scss */
+/* line 285, style.scss */
+.info_wrapper .column div {
+  margin-bottom: 36px;
+}
+/* line 288, style.scss */
 .info_wrapper .column p {
   margin: 0 0 16px 0;
 }
-/* line 236, style.scss */
+/* line 292, style.scss */
 .info_wrapper .column:last-child {
   margin-right: 0%;
 }
@@ -290,28 +327,28 @@ section .image {
 	INSTALLATIONS
 
 ****************************************/
-/* line 247, style.scss */
+/* line 303, style.scss */
 .installation_row {
   width: 67%;
   margin-left: 16.7%;
   margin-bottom: 48px;
   text-align: center;
 }
-/* line 253, style.scss */
+/* line 309, style.scss */
 .installation_row img {
   width: 100%;
   height: auto;
 }
-/* line 257, style.scss */
+/* line 313, style.scss */
 .installation_row .portrait {
   height: 67vw;
   width: auto;
 }
-/* line 261, style.scss */
+/* line 317, style.scss */
 .installation_row .caption {
   display: block;
   width: 100%;
-  font-family: "Franklin Gothic FS", sans-serif;
+  font-family: "Frank", sans-serif;
 }
 
 /****************************************
@@ -319,48 +356,58 @@ section .image {
 	COMMANDES
 
 ****************************************/
-/* line 274, style.scss */
+/* line 330, style.scss */
+#page_wrapper.commandes {
+  width: 100%;
+  margin-left: 0;
+}
+
+/* line 335, style.scss */
 .commandes_item {
   margin-bottom: 48px;
 }
-/* line 276, style.scss */
+/* line 337, style.scss */
 .commandes_item h1, .commandes_item .commandes_intro {
   margin-left: 25%;
   margin-bottom: 36px;
   width: 50%;
+  padding: 4px;
 }
 
-/* line 283, style.scss */
+/* line 346, style.scss */
 .commandes_images {
   margin-left: 0;
   width: 100%;
 }
-/* line 287, style.scss */
+/* line 350, style.scss */
 .commandes_images li {
   display: inline-block;
   vertical-align: top;
   width: 17.5%;
   height: 17.5vw;
   margin-right: 2.5%;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
   text-align: center;
 }
-/* line 296, style.scss */
+/* line 359, style.scss */
 .commandes_images li img {
   width: 100%;
   height: auto;
+  cursor: pointer;
 }
-/* line 300, style.scss */
+/* line 364, style.scss */
 .commandes_images li .landscape {
   margin-top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 304, style.scss */
+/* line 368, style.scss */
 .commandes_images li .portrait {
   height: 100%;
   width: auto;
 }
-/* line 309, style.scss */
+/* line 373, style.scss */
 .commandes_images li:nth-child(5n) {
   margin-right: 0%;
 }
