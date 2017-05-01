@@ -116,7 +116,10 @@ function lh_get_projects () {
     if ( $projects_query->have_posts() ) :
         while ( $projects_query->have_posts() ) : $projects_query->the_post(); 
     		if ( have_rows("images") ) : ?>
-			<section id="<?php the_ID(); ?>" data-title="<?php the_title(); ?>" class="image_collection">
+			<section id="<?php the_ID(); ?>" 
+                    data-title="<?php the_title(); ?>" 
+                    data-height="<?php the_field("section_height"); ?>"
+                    class="image_collection">
 				<ul>
 					<?php 
 					$i = 1;

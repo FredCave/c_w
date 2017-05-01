@@ -4,7 +4,42 @@ var Projects = {
 
 		console.log("Projects.init");
 
+		this.bindEvents();
+
 		this.imagesInit();
+
+		// FADE IN TITLE
+		$(".menu_project_title").css("opacity","1");
+
+	},
+
+	bindEvents: function () {
+
+		console.log("Projects.bindEvents");
+
+		var self = this;
+
+		$(window).on("mousemove", _.throttle( function(e) {
+
+			self.menuHoverCheck(e);
+
+		}, 250 ));
+
+	},
+
+	menuHoverCheck: function ( mouse ) {
+
+		// console.log("Projects.menuHoverCheck");
+
+		if ( mouse.clientY < App.winH / 5 || mouse.clientY < $("#menu_bg").height() ) {
+			// SHOW MENU
+			$(".menu_project_title").css("opacity","0");
+			$("#menu li").not(".current-page").css("opacity","1");
+		} else {
+			// SHOW PROJECT
+			$(".menu_project_title").css("opacity","1");
+			$("#menu li").not(".current-page").css("opacity","0");
+		}
 
 	},
 
@@ -20,6 +55,10 @@ var Projects = {
 			self.sectionLoad( $("section").eq(1) );
 		}, 2000 );
 		
+		// SET SECTION HEIGHTS BASED ON SAVED VALUES
+		$("section").each( function(){
+			$(this).css( "height", parseInt( $(this).attr("data-height") ) + "vh" );
+		});
 
 		// RECORD SECTION MARKERS
 		App.sectionMarkers();
@@ -52,12 +91,22 @@ var Projects = {
 				} else {
 					console.log("Section loaded.");
 					section.addClass("loaded");
+
+					// IF EDIT MODE ENABLE INTERACTION
+					if ( Editor.editMode  ) {
+						section.find(".collection_item .image").resizable("enable");
+						section.find(".collection_item").draggable("enable");
+					}
+
 				}
 			});
 
 		}	
 		// IMG TRIGGER
 		imgLoad();			
+
+
+			
 
 	},
 
@@ -104,7 +153,10 @@ var Projects = {
 		}
 
 		$(img[0]).resizable({
-			aspectRatio: true
+			aspectRatio: true,
+			stop: function () {
+				$("#values_width .value").text( $(img[0]).width() );
+			}
 		});
 
 		// SET CSS BASED ON SAVED VALUES
@@ -118,7 +170,15 @@ var Projects = {
 			"z-index"	: z_index
 		});
 
-		$(img[0]).parent(".ui-wrapper").addClass("collection_item").draggable();
+		$(img[0]).parent(".ui-wrapper").addClass("collection_item").draggable({
+			stop: function () {
+        		var l = ( 100 * parseFloat( $(this).position().left / parseFloat( $(this).parent().width() ) ) ) + "%";
+        		var t = ( 100 * parseFloat($(this).position().top / parseFloat($(this).parent().height() ) ) ) + "%";
+    			$(this).css("left", l);
+       			$(this).css("top", t);
+    		}
+		});
+        
 		// DISABLE INTERACTIONS
 		$(img[0]).parent(".ui-wrapper").draggable("disable");
 		$(img[0]).resizable("disable");

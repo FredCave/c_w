@@ -80,26 +80,40 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+@media (max-width: 600px) {
+  /* line 70, style.scss */
+  body {
+    font-size: 0.9em;
+  }
+}
 
-/* line 79, style.scss */
+/* line 82, style.scss */
 a {
+  border-bottom: 1px solid transparent;
   text-decoration: none;
   color: black;
   padding: 4px 2px;
 }
 
-/* line 86, style.scss */
+/* line 90, style.scss */
 a:hover {
   border-bottom: 1px solid black;
 }
 
-/* line 90, style.scss */
+/* line 94, style.scss */
+h1 {
+  display: inline-block;
+  border-bottom: 1px solid black;
+}
+
+/* line 99, style.scss */
 section {
   position: relative;
   min-height: 100vh;
+  transition: height 0.5s;
   overflow: hidden;
 }
-/* line 95, style.scss */
+/* line 104, style.scss */
 section .image {
   position: absolute;
   width: 100% !important;
@@ -109,21 +123,21 @@ section .image {
   backface-visibility: hidden;
 }
 
-/* line 105, style.scss */
+/* line 114, style.scss */
 .selected {
   box-shadow: 0px 0px 10px rgba(0, 0, 255, 0.8) !important;
 }
-/* line 107, style.scss */
+/* line 116, style.scss */
 .selected .ui-resizable-se {
   display: block !important;
 }
 
-/* line 112, style.scss */
+/* line 121, style.scss */
 .ui-wrapper {
   overflow: visible !important;
 }
 
-/* line 117, style.scss */
+/* line 126, style.scss */
 .ui-resizable-se {
   margin-top: 8px;
   width: 18px;
@@ -135,7 +149,7 @@ section .image {
   display: none !important;
 }
 
-/* line 130, style.scss */
+/* line 139, style.scss */
 #page_wrapper {
   padding-top: 12.5vh;
   padding-bottom: 25vh;
@@ -148,14 +162,15 @@ section .image {
 	MENU
 
 ****************************************/
-/* line 143, style.scss */
+/* line 152, style.scss */
 #menu_bg {
   position: fixed;
   z-index: 99;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 120px;
+  pointer-events: none;
   background: rgba(255, 255, 255, 0);
   background: -moz-linear-gradient(top, white 0%, rgba(246, 246, 246, 0.53) 47%, rgba(237, 237, 237, 0) 100%);
   background: -webkit-gradient(left top, left bottom, color-stop(0%, white), color-stop(47%, rgba(246, 246, 246, 0.53)), color-stop(100%, rgba(237, 237, 237, 0)));
@@ -166,7 +181,7 @@ section .image {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
 }
 
-/* line 154, style.scss */
+/* line 164, style.scss */
 #menu {
   width: 50%;
   text-align: center;
@@ -179,15 +194,50 @@ section .image {
   display: flex;
   justify-content: space-between;
 }
-/* line 166, style.scss */
+/* line 176, style.scss */
 #menu li {
   display: inline-block;
   margin: 0px;
   padding: 2px;
+  position: relative;
+  transition: opacity 1s;
 }
-/* line 172, style.scss */
+/* line 184, style.scss */
+#menu a:hover {
+  border-bottom: 1px solid transparent;
+}
+/* line 187, style.scss */
 #menu li:hover, #menu .current-page {
   border-bottom: 1px solid black;
+}
+
+@media (max-width: 800px) {
+  /* line 193, style.scss */
+  #menu {
+    width: 78%;
+    left: 10%;
+  }
+}
+/* line 199, style.scss */
+.menu_project_title {
+  position: absolute;
+  top: 2px;
+  left: 64px;
+  width: 999px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+/* line 211, style.scss */
+.projects li {
+  opacity: 0;
+}
+
+/* line 215, style.scss */
+.projects .current-page {
+  opacity: 1;
 }
 
 /****************************************
@@ -195,7 +245,7 @@ section .image {
 	LIGHTBOX
 
 ****************************************/
-/* line 183, style.scss */
+/* line 226, style.scss */
 #lightbox_bg {
   position: fixed;
   z-index: 999;
@@ -207,17 +257,33 @@ section .image {
   display: none;
 }
 
-/* line 194, style.scss */
+/* line 237, style.scss */
 #lightbox_close {
   position: fixed;
   top: 36px;
   right: 36px;
+  width: 48px;
+  height: 48px;
   z-index: 999;
   cursor: pointer;
   display: none;
 }
+@media (max-width: 800px), (max-height: 600px) {
+  /* line 237, style.scss */
+  #lightbox_close {
+    top: 18px;
+    right: 18px;
+    width: 32px;
+    height: 32px;
+  }
+}
+/* line 253, style.scss */
+#lightbox_close img {
+  width: 100%;
+  height: 100%;
+}
 
-/* line 203, style.scss */
+/* line 259, style.scss */
 #lightbox_wrapper {
   position: fixed;
   z-index: 9999;
@@ -228,7 +294,14 @@ section .image {
   text-align: center;
   display: none;
 }
-/* line 213, style.scss */
+@media (max-width: 600px) {
+  /* line 259, style.scss */
+  #lightbox_wrapper {
+    width: 80%;
+    left: 10%;
+  }
+}
+/* line 273, style.scss */
 #lightbox_wrapper .image {
   max-height: 100%;
   max-width: 100%;
@@ -236,7 +309,7 @@ section .image {
   cursor: pointer;
   transition: width 0.5s, height 0.5s, opacity 1s;
 }
-/* line 220, style.scss */
+/* line 280, style.scss */
 #lightbox_wrapper .landscape {
   width: 100%;
   height: auto;
@@ -246,7 +319,7 @@ section .image {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 227, style.scss */
+/* line 287, style.scss */
 #lightbox_wrapper .portrait {
   height: 100%;
   width: auto;
@@ -261,7 +334,7 @@ section .image {
 	EDITOR
 
 ****************************************/
-/* line 241, style.scss */
+/* line 301, style.scss */
 #editor_bar {
   position: fixed;
   z-index: 99;
@@ -272,25 +345,76 @@ section .image {
   text-align: right;
   pointer-events: none;
 }
-/* line 252, style.scss */
+/* line 312, style.scss */
 #editor_bar div {
-  display: inline-block;
   padding: 8px 12px 10px 12px;
   pointer-events: auto;
+  margin-left: 12px;
   display: none;
 }
-/* line 258, style.scss */
+/* line 318, style.scss */
 #editor_bar #editor_toggle {
   float: left;
   display: inline-block;
 }
 
-/* line 264, style.scss */
+/* line 324, style.scss */
 #editor_save, #editor_reset, #editor_toggle {
   border: 1px solid black;
+  display: inline-block;
   background-color: rgba(255, 255, 255, 0.6);
   transition: background-color 1s ease-in-out;
   cursor: pointer;
+}
+
+/* line 332, style.scss */
+#editor_values {
+  border: 1px solid black;
+  background-color: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  left: 0;
+  bottom: 64px;
+}
+/* line 338, style.scss */
+#editor_values div {
+  display: block;
+  text-align: left;
+  padding: 0;
+  margin-left: 0;
+}
+/* line 344, style.scss */
+#editor_values input {
+  border: 1px solid black;
+  padding: 4px;
+  width: 100px;
+  margin-right: 24px;
+}
+
+/* line 352, style.scss */
+.ui-spinner {
+  position: relative;
+}
+/* line 354, style.scss */
+.ui-spinner a:hover {
+  border-bottom: 0px;
+}
+
+/* line 359, style.scss */
+.ui-spinner-button {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  right: 8px;
+  background-image: url("assets/img/arrow.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* line 375, style.scss */
+.ui-spinner-down {
+  bottom: -2px;
+  transform: rotate(180deg);
 }
 
 /****************************************
@@ -298,53 +422,61 @@ section .image {
 	INFO
 
 ****************************************/
-/* line 277, style.scss */
+/* line 387, style.scss */
 .info_wrapper {
   font-family: "Frank", "ITC Franklin Gothic Std", sans-serif;
 }
-/* line 280, style.scss */
+/* line 390, style.scss */
 .info_wrapper .column {
   width: 45%;
   margin-right: 5%;
   display: inline-block;
   vertical-align: top;
 }
-/* line 285, style.scss */
+/* line 395, style.scss */
 .info_wrapper .column div {
   margin-bottom: 36px;
 }
-/* line 288, style.scss */
+/* line 398, style.scss */
 .info_wrapper .column p {
   margin: 0 0 16px 0;
 }
-/* line 292, style.scss */
+/* line 402, style.scss */
 .info_wrapper .column:last-child {
   margin-right: 0%;
 }
 
+@media (max-width: 800px) {
+  /* line 408, style.scss */
+  .info_wrapper .column {
+    width: 100%;
+    margin-right: 0%;
+    display: block;
+  }
+}
 /****************************************
 
 	INSTALLATIONS
 
 ****************************************/
-/* line 303, style.scss */
+/* line 426, style.scss */
 .installation_row {
   width: 67%;
   margin-left: 16.7%;
   margin-bottom: 48px;
   text-align: center;
 }
-/* line 309, style.scss */
+/* line 432, style.scss */
 .installation_row img {
   width: 100%;
   height: auto;
 }
-/* line 313, style.scss */
+/* line 436, style.scss */
 .installation_row .portrait {
   height: 67vw;
   width: auto;
 }
-/* line 317, style.scss */
+/* line 440, style.scss */
 .installation_row .caption {
   display: block;
   width: 100%;
@@ -356,58 +488,92 @@ section .image {
 	COMMANDES
 
 ****************************************/
-/* line 330, style.scss */
+/* line 453, style.scss */
 #page_wrapper.commandes {
   width: 100%;
   margin-left: 0;
 }
 
-/* line 335, style.scss */
+/* line 458, style.scss */
 .commandes_item {
   margin-bottom: 48px;
 }
-/* line 337, style.scss */
+/* line 460, style.scss */
 .commandes_item h1, .commandes_item .commandes_intro {
   margin-left: 25%;
   margin-bottom: 36px;
   width: 50%;
-  padding: 4px;
+  padding: 2px 4px;
+}
+@media (max-width: 800px) {
+  /* line 469, style.scss */
+  .commandes_item h1, .commandes_item .commandes_intro {
+    margin-left: 10%;
+    width: 78%;
+  }
+}
+/* line 474, style.scss */
+.commandes_item h1 {
+  width: auto;
 }
 
-/* line 346, style.scss */
+@media (max-width: 800px) {
+  /* line 480, style.scss */
+  #info_portfolio a {
+    clear: both;
+    display: inline-block;
+  }
+}
+/* line 486, style.scss */
 .commandes_images {
   margin-left: 0;
   width: 100%;
 }
-/* line 350, style.scss */
-.commandes_images li {
+/* line 490, style.scss */
+.commandes_images ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+/* line 494, style.scss */
+.commandes_images ul li {
   display: inline-block;
-  vertical-align: top;
   width: 17.5%;
   height: 17.5vw;
-  margin-right: 2.5%;
+  flex-basis: auto;
+  flex-grow: 1;
   margin-bottom: 24px;
   text-align: center;
 }
-/* line 359, style.scss */
-.commandes_images li img {
+@media (max-width: 800px) {
+  /* line 494, style.scss */
+  .commandes_images ul li {
+    width: 20%;
+    height: 20vw;
+  }
+}
+@media (max-width: 600px) {
+  /* line 494, style.scss */
+  .commandes_images ul li {
+    width: 33%;
+    height: 33vw;
+  }
+}
+/* line 512, style.scss */
+.commandes_images ul li img {
   width: 100%;
   height: auto;
   cursor: pointer;
 }
-/* line 364, style.scss */
-.commandes_images li .landscape {
+/* line 517, style.scss */
+.commandes_images ul li .landscape {
   margin-top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 368, style.scss */
-.commandes_images li .portrait {
+/* line 521, style.scss */
+.commandes_images ul li .portrait {
   height: 100%;
   width: auto;
-}
-/* line 373, style.scss */
-.commandes_images li:nth-child(5n) {
-  margin-right: 0%;
 }

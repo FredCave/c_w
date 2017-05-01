@@ -4,6 +4,10 @@ var App = {
 
 	lightboxVisible: false,
 
+	winW: $(window).width(),
+
+	winH: $(window).height(),
+
 	init: function () {
 
 		console.log("App.init");
@@ -13,12 +17,16 @@ var App = {
 			scrollTop : 0
 		} );
 
+		// FONT BUG WORKAROUND
+		$('body').width( $('body').width()+1 ).width('auto');
+
 		this.bindEvents();
 
-		Editor.init();
-		Projects.init();
-
-		this.initCurrentProject();
+		if ( $("section").length ) {
+			Editor.init();
+			Projects.init();
+			this.initCurrentProject();
+		}
 
 	},
 
@@ -51,11 +59,19 @@ var App = {
 		}, 500 ));
 
 		$(window).on("resize", _.throttle( function(){
-			self.sectionMarkers();
+			
+			if ( $("section").length ) {
+				self.sectionMarkers();
+			}	
 			self.imagesResize();
 			if ( self.lightboxVisible ) {
 				self.lightboxSizeCheck();
-			}	
+			}
+
+			// UPDATE WINDOW HEIGHT + WIDTH
+			self.winH = $(window).height();
+			self.winW = $(window).width(); 
+
 		}, 1000 ));
 
 	},
@@ -149,8 +165,10 @@ var App = {
 		var title = $("section").first().attr("data-title");
 		
 		// SET
-		$("#editor_current").text( title );
+		$(".current_title").text( title );
 		this.currentProject = $("section").first().attr("id");
+
+		$("#values_section_height .value").text( $("section").first().attr("data-height") );
 
 	},
 
@@ -163,9 +181,11 @@ var App = {
 		// LOOP THROUGH PROJECTS
 		$("section").each( function(){
 
-			if ( ( scrollTop + ( Editor.winH / 3 ) ) > $(this).attr("data-top") && scrollTop <= $(this).attr("data-bottom") ) {
+			if ( ( scrollTop + ( self.winH / 4 ) ) > $(this).attr("data-top") && scrollTop <= $(this).attr("data-bottom") ) {
 
-				$("#editor_current").text( $(this).attr("data-title") );
+				$(".current_title").text( $(this).attr("data-title") );
+				$("#values_section_height .value").text( $(this).attr("data-height") );
+
 				App.currentProject = $(this).attr("id");
 
 				// LOAD NEXT
@@ -202,6 +222,7 @@ var App = {
 		$("#lightbox_wrapper").show();
 		// $("#lightbox_wrapper img").show();
 		this.imgCalc( $("#lightbox_wrapper img") );
+		this.lightboxSizeCheck();
 		// FADE IN
 		$("#lightbox_wrapper img").css("opacity","1");
 
@@ -249,6 +270,7 @@ var App = {
 				"position"	: ""
 			}).appendTo( $("#lightbox_wrapper") );
 			this.imgCalc( $("#lightbox_wrapper img") );
+			this.lightboxSizeCheck();
 		} else {
 			// BACK TO BEGINNING
 			current.parents("ul").find(".collection_item").first().addClass("lightboxed");
@@ -258,6 +280,7 @@ var App = {
 				"position"	: ""
 			}).appendTo( $("#lightbox_wrapper") );
 			this.imgCalc( $("#lightbox_wrapper img") );
+			this.lightboxSizeCheck();
 		}
 
 	},
@@ -269,6 +292,8 @@ var App = {
 		var img = $("#lightbox_wrapper img"),
 			wrapperRatio = $("#lightbox_wrapper").height() / $("#lightbox_wrapper").width(),
 			imgRatio = parseFloat( img.attr("data-ratio") );
+
+		console.log( 295, wrapperRatio, imgRatio );
 
 		if ( img.hasClass("portrait") ) {
 			// COMPARE IMG WIDTH TO WRAPPER

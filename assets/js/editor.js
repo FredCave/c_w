@@ -2,25 +2,25 @@ var Editor = {
 
 	editMode: false,
 
-	winW: $(window).width(),
-
-	winH: $(window).height(),
-
 	imageSelected: false,
 
 	init: function () {
 
 		console.log("Editor.init");
 
-		// CHECK IF EDITOR FUNCTION ENABLED
+		// CHECK IF USER LOGGED IN, IN PREPARATION FOR EDITMODE TOGGLE
 		if ( $("#editor_bar").length ) {
-
 			this.bindEvents();
 
-			// MAKE SECTION RESIZABLE
-			// if ( this.editMode ) {
-			// 	$("section").resizable();
-			// }
+			$("#section_height_input").spinner({
+				min: 0, 
+				change: function( event, ui ) {
+					Editor.updateSectionHeight( event.target.value );
+				},
+				spin: function (event, ui) {
+					Editor.updateSectionHeight( ui.value );
+				}
+			});
 
 		}
 
@@ -48,6 +48,13 @@ var Editor = {
 			}
 		});
 
+		// ON MOUSEUP SO THAT IT GETS FINAL VALUES AFTER DRAG AND POSITIONING
+		$(".image").on("mouseup", function (){
+			if ( self.editMode ) {
+				self.imageValues( $(this) );
+			}
+		});
+
 		// CLICK OUTSIDE TO CLOSE
 		$("section").click( function (event) { 
 		    if ( self.editMode && !$(event.target).closest('.ui-wrapper').length ) {
@@ -63,6 +70,17 @@ var Editor = {
 					self.zIndexShift("down");
 				}
 			}
+		});
+
+		$("#values_section_height input").keyup( function(e) {
+		    if ( e.keyCode == 13 ) {
+		        var inputValue = $("#values_section_height input").val();
+		        if ( inputValue >= 100 ) {
+		        	self.updateSectionHeight( inputValue );	
+		        } else {
+		        	alert("Value must be more than 100.");
+		        }
+		    }
 		});
 
 		// RESET IMAGES
@@ -107,7 +125,25 @@ var Editor = {
 		console.log("Editor.imagesUnhighlight");
 
 		$(".selected").removeClass("selected");
-		$("#editor_zindex").text("");
+		$("#editor_values").not("#values_section_height").find(".value").text("");
+		$("#values_section_height input").val("");
+		
+	},
+
+	imageValues: function ( img ) {
+
+		console.log("Editor.imageValues");
+
+		$("#values_width .value").text( img.width() );
+		$("#values_top .value").text( img.parent(".collection_item").position().top );
+		$("#values_left .value").text( img.parent(".collection_item").position().left );
+		$("#values_zindex .value").text( img.parent(".collection_item").css("z-index") );
+
+		console.log( "Top:", img.parent(".collection_item").position().top / img.parents("section").height() );
+
+		var parentHeight = $("#" + App.currentProject).attr("data-height") || 100;
+		$("#values_section_height input").val( parentHeight );
+		console.log( 131, parentHeight );
 
 	},
 
@@ -131,7 +167,7 @@ var Editor = {
 			}
 
 			$(".selected").css( "z-index", newCurrent );
-			$("#editor_zindex").text( "Index = " + newCurrent );
+			$("#values_zindex .value").text( newCurrent );
 
 		}
 
@@ -144,21 +180,26 @@ var Editor = {
 		var currSec = $( "#"+ App.currentProject );
 		currSec.find(".ui-wrapper").css({
 			"position" : "relative",
-			"width" : "25%",
+			"width" : "15%",
 			"height" : "auto",
 			"top" : "0",
+			"left" : "0", 
 			"display" : "inline-block"
 		});
 		setTimeout( function(){
 			currSec.find(".ui-wrapper").each( function(){
 				// GET CURRENT VALUES
-				var thisTop = $(this).offset().top,
-					thisLeft = $(this).offset().left,
+				var thisTop = $(this).position().top,
+					thisLeft = $(this).position().left,
 					thisWidth = $(this).width();
+				$(this).attr({
+					"data-top" : thisTop,
+					"data-left" : thisLeft
+				});
 				$(this).css({
 					"position" : "absolute",
-					"top" : thisTop,
-					"left" : thisLeft,
+					"top" : this.attr("data-top"),
+					"left" : this.attr("data-left"),
 					"width" : thisWidth
 				});		
 			});			
@@ -170,8 +211,6 @@ var Editor = {
 
 		console.log("Editor.imagesSave");
 
-		// PROJECT BY PROJECT
-
 		var self = this;
 
 		// GET PROJECT JSON FROM SERVER
@@ -181,6 +220,8 @@ var Editor = {
             url: LH_SCRIPT.root + 'acf/v3/projects/' + id,
             success : function( response ) { 
                 
+            	console.log( 196, response );
+
                 postImages = response.acf.images;                
 
                 // LOOP THROUGH IMAGES
@@ -191,15 +232,20 @@ var Editor = {
 				    	pageImg = $("#" + postImg.ID).parent(".ui-wrapper");
 				    
 				    // STORE STATE IN IMAGE OBJECT
-				    postImages[i].saved_width		= parseFloat( ( pageImg.width() / self.winW * 100 ).toFixed(2) ) || 0,
-				    postImages[i].saved_top			= parseFloat( ( pageImg.position().top / self.winW * 100 ).toFixed(2) ) || 0, // TOP AS PERC OF WRAPPER (WIN)
-					postImages[i].saved_left		= parseFloat( ( pageImg.position().left / self.winW * 100 ).toFixed(2) ) || 0, // LEFT AS PERC OF WRAPPER (WIN)
+				    postImages[i].saved_width		= parseFloat( ( pageImg.width() / App.winW * 100 ).toFixed(2) ) || 0,
+				    postImages[i].saved_top			= parseFloat( ( pageImg.position().top / pageImg.parents("section").height() * 100 ).toFixed(2) ) || 0, // TOP AS PERC OF WRAPPER (WIN)
+					postImages[i].saved_left		= parseFloat( ( pageImg.position().left / App.winW * 100 ).toFixed(2) ) || 0, // LEFT AS PERC OF WRAPPER (WIN)
 					postImages[i].saved_z_index 	= parseFloat( pageImg.css("z-index") ) || 1;
 				}
 
+				// GET SECTION HEIGHT FROM PAGE AS VH
+				sectionHeight = parseInt( $("#" + id).attr("data-height") );
+				console.log( 217, $("#" + id).height(), App.winH, sectionHeight );
+
 				var data = {
 					"fields": {
-						"images": postImages
+						"images": postImages,
+						"section_height": sectionHeight
 					}
 				}
 
@@ -239,6 +285,18 @@ var Editor = {
 
 	},
 
+	updateSectionHeight: function ( value ) {
+
+		console.log("Editor.updateSectionHeight", value );
+
+		// UPDATE SECTION HEIGHT ON PAGE + STORED VALUE
+		$("#" + App.currentProject).css( "height", value + "vh" ).attr("data-height",value);
+
+		// UPDATE SECTION MARKERS
+		App.sectionMarkers();
+
+	},
+
 	editorToggle: function () {
 
 		console.log("Editor.editorToggle", this.editMode );
@@ -251,6 +309,8 @@ var Editor = {
 			$(".collection_item .image").resizable("disable");
 			$(".collection_item").draggable("disable");
 
+			$("section").css( "border", "" );
+
 			$("#editor_bar div").not("#editor_toggle").fadeOut();
 
 			$("#editor_toggle").text("Enter editor mode.");
@@ -260,6 +320,9 @@ var Editor = {
 			this.editMode = true;
 
 			$("#editor_bar div").css("display","inline-block");
+			$("#editor_values div").css("display","block");
+
+			$("section").css( "border", "1px dashed #bbb" );
 
 			// ENABLE RESIZABLE + DRAGGABLE
 			$(".collection_item .image").resizable("enable");
