@@ -22,10 +22,14 @@ var App = {
 
 		this.bindEvents();
 
+		this.menuCheck();
+
 		if ( $("section").length ) {
 			Editor.init();
 			Projects.init();
 			this.initCurrentProject();
+		} else {
+			this.otherPageInit();
 		}
 
 	},
@@ -43,9 +47,13 @@ var App = {
 			}	
 		});
 
-		// TODO: CLICK OR SWIPE OR SCROLL DOWN TO ADVANCE
 		$("#lightbox_wrapper").on("click", ".image", function (){
 			self.lightboxForward();
+		});
+
+		// CLICK OUTSIDE TO CLOSE
+		$("#lightbox_bg").on("click", function () {
+			self.lightboxClose();
 		});
 
 		$("#lightbox_close").on("click", function (){
@@ -76,6 +84,43 @@ var App = {
 
 	},
 
+	menuCheck: function () {
+
+		console.log("App.menuCheck");
+
+		var self = this;
+
+		if ( Modernizr.touchevents ) {
+			$("body").addClass("touch");
+		} 
+
+		if ( $("#menu").hasClass("projects") ) {
+			
+			if ( this.winW <= 600 || $("body").hasClass("touch") ) {
+
+				// TITLE + MENU BUTTON
+				
+					// CLONE PROJECT TITLE
+				$(".current-page").clone().appendTo( "#mobile_menu" );
+
+				$("#mobile_menu").append("<div class='menu_toggle'>Menu</div>");
+
+				$("#mobile_menu").fadeIn();
+
+			} else {
+
+				$("#menu").fadeIn().css({"display":"flex"});
+
+			}
+
+		} else {
+
+			$("#menu").fadeIn().css({"display":"flex"});
+			
+		}
+
+	},
+
 	sectionMarkers: function () {
 
 		console.log("App.sectionMarkers");
@@ -97,7 +142,7 @@ var App = {
 
 	imgCalc: function ( img ) {
 
-		console.log("App.imgCalc" );
+		console.log("App.imgCalc");
 
 		// GET WIDTH AND RATIO
 		var width = img.width(),
@@ -188,6 +233,13 @@ var App = {
 
 				App.currentProject = $(this).attr("id");
 
+				// // IF PROJECT HAS UNIFORM MODE HIGHLIGHT BUTTON
+				// if ( $(this).hasClass("uniform") ) {
+				// 	$("#values_uniform").addClass("uniform_selected");
+				// } else {
+				// 	$("#values_uniform").removeClass("uniform_selected");
+				// }
+
 				// LOAD NEXT
 				if ( !$(this).next().hasClass("loaded") ) {
 					Projects.sectionLoad( $(this).next() );
@@ -261,27 +313,29 @@ var App = {
 		// EMPTY WRAPPER
 		$("#lightbox_wrapper").empty();
 
+		var targetImg;
+
 		// IF NEXT EXISTS
 		if ( current.next(".collection_item").length ) {
-			current.next(".collection_item").addClass("lightboxed");
-			current.next(".collection_item").find("img").clone().css({
-				"width"		: "",
-				"height"	: "",
-				"position"	: ""
-			}).appendTo( $("#lightbox_wrapper") );
-			this.imgCalc( $("#lightbox_wrapper img") );
-			this.lightboxSizeCheck();
+			
+			targetImg = current.next(".collection_item");
+
 		} else {
+
 			// BACK TO BEGINNING
-			current.parents("ul").find(".collection_item").first().addClass("lightboxed");
-			current.parents("ul").find(".collection_item").first().find("img").clone().css({
+			targetImg = current.parents("ul").find(".collection_item").first();
+
+		}
+		
+		targetImg.addClass("lightboxed")
+			.find("img").clone().css({
 				"width"		: "",
 				"height"	: "",
 				"position"	: ""
-			}).appendTo( $("#lightbox_wrapper") );
-			this.imgCalc( $("#lightbox_wrapper img") );
-			this.lightboxSizeCheck();
-		}
+		}).appendTo( $("#lightbox_wrapper") );
+
+		this.lightboxSizeCheck();
+		this.imgCalc( $("#lightbox_wrapper img") );
 
 	},
 
@@ -293,7 +347,7 @@ var App = {
 			wrapperRatio = $("#lightbox_wrapper").height() / $("#lightbox_wrapper").width(),
 			imgRatio = parseFloat( img.attr("data-ratio") );
 
-		console.log( 295, wrapperRatio, imgRatio );
+		// console.log( 295, wrapperRatio, imgRatio );
 
 		if ( img.hasClass("portrait") ) {
 			// COMPARE IMG WIDTH TO WRAPPER
@@ -302,10 +356,32 @@ var App = {
 			}
 		} else if ( img.hasClass("landscape") ) {
 			// COMPARE IMG HEIGHT TO WRAPPER
+			console.log( 359, "Image is landscape." );
 			if ( wrapperRatio < imgRatio ) {
+				console.log( 359, "Image is now portrait." );
 				img.removeClass("landscape").addClass("portrait");
 			}
 		}
+
+	},
+
+	otherPageInit: function () {
+
+		console.log("App.otherPageInit");
+
+		var imgW,
+			self = this;
+
+		// LOOP THROUGH IMAGES
+		$(".image").each( function(){
+
+			// CALC SIZE + SET SRC
+			self.imgCalc( $(this) );
+			
+			// ADD CLASS FOR WINDOW RESIZE FUNCTION + FADE IN
+			$(this).addClass("image_loaded").css({"opacity":"1"});
+
+		});
 
 	}
 

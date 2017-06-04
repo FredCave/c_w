@@ -1,5 +1,7 @@
 var Projects = {
 
+	mobileMenuVisible: false,
+
 	init: function () {
 
 		console.log("Projects.init");
@@ -19,6 +21,12 @@ var Projects = {
 
 		var self = this;
 
+		$("#mobile_menu").on("click", ".menu_toggle", function(){
+
+			self.menuToggle();
+
+		});
+
 		$(window).on("mousemove", _.throttle( function(e) {
 
 			self.menuHoverCheck(e);
@@ -33,12 +41,33 @@ var Projects = {
 
 		if ( mouse.clientY < App.winH / 5 || mouse.clientY < $("#menu_bg").height() ) {
 			// SHOW MENU
-			$(".menu_project_title").css("opacity","0");
+			$("#menu .menu_project_title").css("opacity","0");
 			$("#menu li").not(".current-page").css("opacity","1");
 		} else {
 			// SHOW PROJECT
-			$(".menu_project_title").css("opacity","1");
+			$("#menu .menu_project_title").css("opacity","1");
 			$("#menu li").not(".current-page").css("opacity","0");
+		}
+
+	},
+
+	menuToggle: function () {
+
+		console.log("Projects.menuToggle");
+
+		if ( !this.mobileMenuVisible ) {
+
+			// SHOW MENU
+			$("#mobile_menu").fadeOut();
+			$("#menu").fadeIn();
+
+			// STRETCH BG
+			$("#menu_bg").css("height", $("#menu").height() );
+
+		} else {
+
+			// HIDE MENU
+
 		}
 
 	},
@@ -99,14 +128,16 @@ var Projects = {
 					}
 
 				}
+			}).each(function() {
+				
+				// FALLBACK FOR BROWSERS WHERE THE LOAD EVENT DOESN'T FIRE THE FIRST TIME
+				if(this.complete) $(this).load();
+				
 			});
 
 		}	
 		// IMG TRIGGER
 		imgLoad();			
-
-
-			
 
 	},
 
@@ -115,11 +146,12 @@ var Projects = {
 		console.log("Projects.imgCalc");
 
 		// GET SAVED VALUES
-		var width 	= parseFloat( $(img[0]).attr("data-width") ) || 15,
+		var width 	= parseInt( $(img[0]).attr("data-width") ) || 15,
+			height 	= parseInt( $(img[0]).attr("data-height") ) || 15,
 			ratio  	= parseFloat( $(img[0]).attr("data-ratio") ),
-			top 	= parseFloat( $(img[0]).attr("data-top") ) || 0,
-			left	= parseFloat( $(img[0]).attr("data-left") ) || 0,
-			z_index = parseFloat( $(img[0]).attr("data-zindex") ) || 1,
+			top 	= parseInt( $(img[0]).attr("data-top") ) || 0,
+			left	= parseInt( $(img[0]).attr("data-left") ) || 0,
+			z_index = parseInt( $(img[0]).attr("data-zindex") ) || 1,
 			src,
 			position;
 
@@ -146,7 +178,8 @@ var Projects = {
 		}
 
 		// FALLBACK
-		if ( isNaN(top) || top === 0 ) {
+		// if ( isNaN(top) || top === 0 ) {
+		if ( isNaN(top) ) {
 			position = "relative";
 		} else {
 			position = "absolute";		
@@ -155,7 +188,8 @@ var Projects = {
 		$(img[0]).resizable({
 			aspectRatio: true,
 			stop: function () {
-				$("#values_width .value").text( $(img[0]).width() );
+				// console.log( 185, $(img[0]).height() );
+				$("#values_height .value").val( $(img[0]).height() );
 			}
 		});
 
@@ -163,8 +197,8 @@ var Projects = {
 		$(img[0]).attr( "src", src ).parent(".ui-wrapper").css({
 			"display"	: "inline-block",
 			"position"	: position, 
-			"width" 	: width + "%",
-			"height" 	: width * ratio + "vw",
+			"width" 	: height / ratio + "vh", // width + "%", //
+			"height" 	: height + "%", // width * ratio + "vw", // 
 			"top" 		: top + "%",
 			"left"		: left + "%",
 			"z-index"	: z_index

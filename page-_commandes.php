@@ -4,10 +4,10 @@
 
 		<!-- PORTFOLIO DOWNLOAD -->
 		<?php if ( get_field( "info_commandes_portfolio", 107 ) ) { ?>
-			<div id="info_portfolio" class="commandes_item">
+			<div id="info_portfolio" class="">
 				<div class="commandes_intro">
 					Télécharger portfolio :
-					<?php $portfolio = get_field( "info_portfolio", 107 ); ?>
+					<?php $portfolio = get_field( "info_commandes_portfolio", 107 ); ?>
 					<a target="_blank" href="<?php echo $portfolio["url"]; ?>">
 						<?php echo $portfolio["filename"]; ?>
 					</a>

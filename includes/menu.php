@@ -1,6 +1,9 @@
 <div id="menu_bg"></div>
 
-<?php // ADD CLASS ON PROOJECTS PAGE SO THAT MENU STARTS AS INVISIBLE ?>
+<?php // ADD CLASS ON PROJECTS PAGE SO THAT MENU STARTS AS INVISIBLE ?>
+
+<div id="mobile_menu"></div>
+
 <ul id="menu" <?php if ( is_page("projets") ) { echo "class='projects'"; } ?> >
 
 	<li <?php lh_get_current("info"); ?> >

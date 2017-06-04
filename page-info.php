@@ -60,7 +60,7 @@
 				<?php endif; ?>
 			</div><!-- END OF RIGHT COLUMN -->
 
-		</div>
+		</div><!-- END OF #COLUMS_WRAPPER -->
 
 		<div id="credit">
 			Website: <a target="_blank" href="http://fredcave.com">Fred Cave</a>

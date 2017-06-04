@@ -19,11 +19,12 @@ add_filter('the_generator', 'wpversion_remove_version');
 function enqueue_lola_scripts() {
   
     wp_deregister_script( 'jquery' );
-	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
-// //    wp_register_script( 'jquery', get_template_directory_uri() . '/js/_jquery.js');
+	// wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
+    wp_register_script( 'jquery', get_template_directory_uri() . '/js/_jquery.min.js');
 	wp_enqueue_script( 'jquery' );  
  
-    wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), true);
+    // wp_enqueue_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'), true);
+    wp_enqueue_script( 'jquery-ui', get_template_directory_uri() . '/js/_jquery-ui.min.js');
     wp_enqueue_script('all-scripts', get_template_directory_uri() . '/js/scripts.min.js', array('jquery'), true);
 
 	// LOCALIZE DATA FOR SCRIPT – AUTHENTIFICATION FOR REST API
@@ -77,7 +78,7 @@ add_image_size( 'ultralarge', 1600, 1600 );
 
 // IMAGE OBJECT
 
-function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left, $saved_z_index ) {
+function lh_image_object( $image, $title, $saved_width, $saved_height, $saved_top, $saved_left, $saved_z_index ) {
     if( !empty($image) ): 
         $width = $image['sizes'][ 'thumbnail-width' ];
         $height = $image['sizes'][ 'thumbnail-height' ];
@@ -96,6 +97,7 @@ function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left,
         	class='image " . $class . "' 
             alt='Lola Hakimian – " . $title . "' 
             data-width='" . $saved_width . "' 
+            data-height='" . $saved_height . "' 
             data-ratio='" . $height / $width . "' 
             data-top='" . $saved_top . "' 
             data-left='" . $saved_left . "' 
@@ -105,7 +107,7 @@ function lh_image_object( $image, $title, $saved_width, $saved_top, $saved_left,
             data-lrg='" . $large . "' 
             data-xlg='" . $extralarge . "' 
             data-ulg='" . $ultralarge . "' 
-            src='" . $ultralarge . "' />";
+            src='" . $thumb . "' />";
     endif;
 }
 
@@ -115,27 +117,28 @@ function lh_get_projects () {
     $projects_query = new WP_Query( "post_type=projects" ); 
     if ( $projects_query->have_posts() ) :
         while ( $projects_query->have_posts() ) : $projects_query->the_post(); 
-    		if ( have_rows("images") ) : ?>
-			<section id="<?php the_ID(); ?>" 
+            if ( have_rows("images") ) : ?>
+            <section id="<?php the_ID(); ?>" 
                     data-title="<?php the_title(); ?>" 
                     data-height="<?php the_field("section_height"); ?>"
                     class="image_collection">
-				<ul>
-					<?php 
-					$i = 1;
-					while ( have_rows("images") ) : the_row();
-						$image 			= get_sub_field("image");
-						$saved_width 	= get_sub_field("saved_width");
-						$saved_top 		= get_sub_field("saved_top");
-						$saved_left		= get_sub_field("saved_left");
-						$saved_z_index	= get_sub_field("saved_z_index");
-						lh_image_object( $image, get_the_title(), $saved_width, $saved_top, $saved_left, $saved_z_index );
-						$i++;
-					endwhile; ?>
-				</ul>
-			</section>
-			<?php 
-			endif;
+                <ul>
+                    <?php 
+                    $i = 1;
+                    while ( have_rows("images") ) : the_row();
+                        $image          = get_sub_field("image");
+                        $saved_width    = get_sub_field("saved_width");
+                        $saved_height   = get_sub_field("saved_height");
+                        $saved_top      = get_sub_field("saved_top");
+                        $saved_left     = get_sub_field("saved_left");
+                        $saved_z_index  = get_sub_field("saved_z_index");
+                        lh_image_object( $image, get_the_title(), $saved_width, $saved_height, $saved_top, $saved_left, $saved_z_index );
+                        $i++;
+                    endwhile; ?>
+                </ul>
+            </section>
+            <?php 
+            endif;
         endwhile; //  POST WHILE
     endif;    
 }
@@ -171,5 +174,31 @@ function my_acf_admin_head() {
 }
 
 add_action('acf/input/admin_head', 'my_acf_admin_head');
+
+// SOCIAL MEDIA IMAGE
+
+function get_social_media_img () {
+
+    // GET ONE RANDOM PROJECT POST
+    $args = array(
+        "post_type"         => "projects",
+        "orderby"           => "rand",
+        "posts_per_page"    => 1 
+    );
+    $projects_query = new WP_Query( $args ); 
+    if ( $projects_query->have_posts() ) :
+        while ( $projects_query->have_posts() ) : $projects_query->the_post(); 
+
+            // GET RANDOM IMAGE
+            $rows = get_field("images");
+            if ($rows) {
+                shuffle( $rows );
+                print_r( $rows[0]["image"]["sizes"]["extralarge"] );
+            }
+ 
+        endwhile;
+    endif;  
+
+}
 
 ?>

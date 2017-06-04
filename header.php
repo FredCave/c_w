@@ -10,35 +10,21 @@
     <meta property="og:type" content="Website" />
     <meta property="og:title" content="<?php bloginfo('title'); ?>" />
     <meta property="og:description" content="<?php bloginfo('description'); ?>" />
-    <meta property="og:image" content="" />
+    <meta property="og:image" content="<?php get_social_media_img(); ?>" />
 
     <!-- TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:site" content="<?php bloginfo('url'); ?>">
 	<meta name="twitter:description" content="<?php bloginfo('description'); ?>">
 	<meta name="twitter:title" content="<?php bloginfo('title'); ?>">
-	<meta name="twitter:image" content="">
+	<meta name="twitter:image" content="<?php get_social_media_img(); ?>">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-	-->
 
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url') ?>/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url') ?>/style.min.css">
 	
-	<!--
-	<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="/favicon-194x194.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="/manifest.json">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="msapplication-TileImage" content="/mstile-310x310.png">
-	<meta name="theme-color" content="#ffffff">
-	-->
+	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/img/favicon.png" />
 
 	<script>
 		// FIX IE CONSOLE ERRORS

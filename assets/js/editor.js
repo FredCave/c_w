@@ -42,10 +42,13 @@ var Editor = {
 			self.imagesSave( App.currentProject );
 		});
 
-		$(".image").on("mousedown", function (){
+		$(".image").on("mousedown", function (e) {
+			
+			// IF GLOBAL EDIT MODE ENABLED 
 			if ( self.editMode ) {
 				self.imageHighlight( $(this) );
-			}
+			} 
+
 		});
 
 		// ON MOUSEUP SO THAT IT GETS FINAL VALUES AFTER DRAG AND POSITIONING
@@ -72,14 +75,29 @@ var Editor = {
 			}
 		});
 
-		$("#values_section_height input").keyup( function(e) {
+		$("#editor_values input").keyup( function(e) {
 		    if ( e.keyCode == 13 ) {
-		        var inputValue = $("#values_section_height input").val();
-		        if ( inputValue >= 100 ) {
-		        	self.updateSectionHeight( inputValue );	
-		        } else {
-		        	alert("Value must be more than 100.");
-		        }
+		        
+		    	var value = $(this).val(),
+		    		name = $(this).attr("name").split("_")[1];
+
+		    	// console.log( 83, name, value );
+
+		    	// IF SECTION HEIGHT
+		    	if ( name === "sectionheight" ) {
+		    		
+		    		if ( value >= 100 ) {
+			        	Editor.updateSectionHeight( value );	
+			        } else {
+			        	alert("Value must be more than 100.");
+			        }
+
+		    	} else {
+
+		    		Editor.updateImageValue( name, value );
+
+		    	}
+
 		    }
 		});
 
@@ -134,16 +152,59 @@ var Editor = {
 
 		console.log("Editor.imageValues");
 
-		$("#values_width .value").text( img.width() );
-		$("#values_top .value").text( img.parent(".collection_item").position().top );
-		$("#values_left .value").text( img.parent(".collection_item").position().left );
-		$("#values_zindex .value").text( img.parent(".collection_item").css("z-index") );
+		var self = this;
 
-		console.log( "Top:", img.parent(".collection_item").position().top / img.parents("section").height() );
+		$("#values_height .value").val( img.height() );
+		$("#values_top .value").val( img.parent(".collection_item").position().top );
+		$("#values_left .value").val( img.parent(".collection_item").position().left );
+		$("#values_zindex .value").val( img.parent(".collection_item").css("z-index") );
+
+		// console.log( "Top:", img.parent(".collection_item").position().top / img.parents("section").height() );
 
 		var parentHeight = $("#" + App.currentProject).attr("data-height") || 100;
 		$("#values_section_height input").val( parentHeight );
-		console.log( 131, parentHeight );
+
+		$("#editor_values input").each( function(){
+
+			self.updateImageValue( $(this).attr("name").split("_")[1], $(this).val() );
+
+			$(this).spinner({
+				// change: function (event, ui) {
+				// 	self.updateImageValue( event, ui );
+				// 	console.log( 157, "change" );	
+				// }, 
+				spin: function (event, ui) {
+					// console.log( 175, event, ui );
+					var param = $(event.target).attr("name").split("_")[1],
+						value = ui.value;
+					self.updateImageValue( param, value );
+				}
+			});
+
+		});
+
+	},
+
+	updateImageValue: function ( param, value ) {
+
+		console.log("Editor.updateImageValue");
+
+		var percValue;
+
+		// CONVERT VALUE TO PERC
+		// HEIGHT, TOP, LEFT
+		if ( param === "top" ) {
+			percValue = parseFloat( ( value / $(".selected").parents("section").height() * 100 ).toFixed(2) ) + "%";
+		} else if ( param === "left" ) {
+			percValue = parseFloat( ( value / $(window).width() * 100 ).toFixed(2) ) + "%";
+			console.log( 195, percValue );
+		} else {
+			percValue = value;
+		}
+
+		console.log( param, percValue );
+
+		$(".selected").css( param, percValue );
 
 	},
 
@@ -220,7 +281,7 @@ var Editor = {
             url: LH_SCRIPT.root + 'acf/v3/projects/' + id,
             success : function( response ) { 
                 
-            	console.log( 196, response );
+            	// console.log( 196, response );
 
                 postImages = response.acf.images;                
 
@@ -233,14 +294,15 @@ var Editor = {
 				    
 				    // STORE STATE IN IMAGE OBJECT
 				    postImages[i].saved_width		= parseFloat( ( pageImg.width() / App.winW * 100 ).toFixed(2) ) || 0,
+				    postImages[i].saved_height		= parseFloat( ( pageImg.height() / App.winH * 100 ).toFixed(2) ) || 0,
 				    postImages[i].saved_top			= parseFloat( ( pageImg.position().top / pageImg.parents("section").height() * 100 ).toFixed(2) ) || 0, // TOP AS PERC OF WRAPPER (WIN)
 					postImages[i].saved_left		= parseFloat( ( pageImg.position().left / App.winW * 100 ).toFixed(2) ) || 0, // LEFT AS PERC OF WRAPPER (WIN)
 					postImages[i].saved_z_index 	= parseFloat( pageImg.css("z-index") ) || 1;
 				}
 
 				// GET SECTION HEIGHT FROM PAGE AS VH
-				sectionHeight = parseInt( $("#" + id).attr("data-height") );
-				console.log( 217, $("#" + id).height(), App.winH, sectionHeight );
+				sectionHeight = parseInt( $("#" + id).attr("data-height") ) || 100;
+				// console.log( 217, $("#" + id).height(), App.winH, sectionHeight );
 
 				var data = {
 					"fields": {
@@ -270,7 +332,7 @@ var Editor = {
 
 		            },
 		            fail : function( response ) {
-		                console.log( "Fail", response );
+		                console.log( "Error.", response );
 		                alert( LH_SCRIPT.failure );
 		            }
 
@@ -322,7 +384,7 @@ var Editor = {
 			$("#editor_bar div").css("display","inline-block");
 			$("#editor_values div").css("display","block");
 
-			$("section").css( "border", "1px dashed #bbb" );
+			$("section").css( "border-bottom", "2px dashed #bbb" );
 
 			// ENABLE RESIZABLE + DRAGGABLE
 			$(".collection_item .image").resizable("enable");
