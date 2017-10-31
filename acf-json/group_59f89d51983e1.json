@@ -1,11 +1,11 @@
 {
-    "key": "group_58f5e64c31318",
-    "title": "Installations",
+    "key": "group_59f89d51983e1",
+    "title": "Images",
     "fields": [
         {
-            "key": "field_58f5e6503b0eb",
-            "label": "Installations",
-            "name": "installations",
+            "key": "field_59f89d54d8c49",
+            "label": "Images",
+            "name": "images",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -22,9 +22,9 @@
             "button_label": "Add Image",
             "sub_fields": [
                 {
-                    "key": "field_58f5e65c3b0ec",
+                    "key": "field_59f89d5ed8c4a",
                     "label": "Image",
-                    "name": "installation_image",
+                    "name": "image",
                     "type": "image",
                     "instructions": "",
                     "required": 0,
@@ -44,27 +44,6 @@
                     "max_height": "",
                     "max_size": "",
                     "mime_types": ""
-                },
-                {
-                    "key": "field_58f5e6793b0ed",
-                    "label": "L\u00e9gende",
-                    "name": "installation_caption",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": "",
-                    "readonly": 0,
-                    "disabled": 0
                 }
             ]
         }
@@ -74,7 +53,7 @@
             {
                 "param": "post",
                 "operator": "==",
-                "value": "123"
+                "value": "8"
             }
         ]
     ],
@@ -102,5 +81,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1492510350
+    "modified": 1509465459
 }

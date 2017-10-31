@@ -10,14 +10,14 @@
     <meta property="og:type" content="Website" />
     <meta property="og:title" content="<?php bloginfo('title'); ?>" />
     <meta property="og:description" content="<?php bloginfo('description'); ?>" />
-    <meta property="og:image" content="<?php get_social_media_img(); ?>" />
+    <meta property="og:image" content="" />
 
     <!-- TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:site" content="<?php bloginfo('url'); ?>">
 	<meta name="twitter:description" content="<?php bloginfo('description'); ?>">
 	<meta name="twitter:title" content="<?php bloginfo('title'); ?>">
-	<meta name="twitter:image" content="<?php get_social_media_img(); ?>">
+	<meta name="twitter:image" content="">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -45,5 +45,3 @@
 </head>
 
 <body>
-
-	<?php include("includes/menu.php"); ?>
