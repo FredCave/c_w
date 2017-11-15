@@ -16,7 +16,13 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 ****************************************/
 
-
+@font-face {
+    font-family: 'Suisse';
+    src: url('assets/fonts/suisseworks-book-webfont.woff2') format('woff2'),
+         url('assets/fonts/suisseworks-book-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /****************************************
 
@@ -25,10 +31,136 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 ****************************************/
 
 html, body {
-    font-family: "Suisse Works";
+    font-family: "Suisse", "Suisse Works", Times, "Times New Roman", serif;
     font-size: 1.8em;
     line-height: 1.35;
     padding-bottom: 80px;
+    background-color: black;
+    color: white;
+    @media ( max-width: 1440px ) {
+        font-size: 3.33vw;       
+    }
+    // @media ( max-width: 1248px ) {
+    //     font-size: 3.15vw;       
+    // }
+    @media ( max-width: 1024px ) {
+        font-size: 1.3em;       
+    }
+}
+
+#version_one {
+    width: 100%;
+    height: 100%;
+    // background: #b1ddc4;
+    #text_wrapper {
+        position: relative;
+        width: 50%;
+        @media ( max-width: 660px ) {
+            width: 100%;
+        }
+        div {
+            // border: 1px solid purple;
+            margin: 36px;
+            margin-bottom: 64px;
+            @media ( max-width: 660px ) {
+                margin: 24px;
+            }
+            p {
+                // border: 1px solid purple;
+                width: calc( 100% - 32px ); 
+                @media ( max-width: 1248px ) {  
+                    width: 100%; 
+                }      
+            }
+        }
+        div.small_text {
+            width: calc( 100% - 72px );
+            font-size: 0.67em;
+            @media ( max-width: 660px ) {
+                width: calc( 100% - 48px );
+            }
+            p {
+                text-indent: 64px;
+            }
+            p:first-child {
+                text-indent: 0;
+            }
+        }
+        a {
+            color: white;
+            text-decoration: none;
+        }        
+    }
+    #images_wrapper {
+        // border: 2px solid blue;
+        position: fixed;
+        z-index: 0;
+        height: 100vh;
+        width: 50%;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        cursor: none;
+        @media ( max-width: 660px ) {
+            display: none;
+        }
+        ul {
+            height: 100vh;
+            width: 100%;
+            li {
+                // border: 1px solid red;
+                position: absolute;
+                z-index: 1; 
+                width: 100%;
+                height: 100vh;
+                // top: -5vh;
+                left: 0;
+                text-align: center;
+                // display: flex;
+                // justify-content: center; 
+                // align-items: center;
+                opacity: 0;
+                transition: left 1s;
+                overflow: hidden;
+                img {
+                    position: relative;
+                    width: auto;
+                    height: 120%;
+                    margin-top: -10%;
+                    margin-left: -25%;
+                    // align-self: center;
+                    //transform: translateY(-50%) translateY(-50%);
+                }
+            }
+            li.visible {
+                opacity: 1; 
+                z-index: 99;  
+            }
+            li.next_in_line {
+                opacity: 1;
+            }
+        }
+        .cursor {
+            // border: 1px solid purple;
+            position: fixed;
+            z-index: 99;
+            top: -100px;
+            left: 0;
+            width: 64px;
+            height: 64px;
+            mix-blend-mode: difference;
+            img {
+                // border: 1px solid green;
+                width: 100%;
+                height: 100%;
+                margin-top: -32px;
+                margin-left: -32px;
+            }
+        }
+    }
+}
+
+#version_two {
     #text_wrapper {
         div {
             // border: 1px solid purple;
@@ -53,28 +185,27 @@ html, body {
             text-decoration: none;
         }        
     }
-}
-
-#images_wrapper {
-    position: fixed;
-    z-index: -1;
-    height: 100%;
-    width: 12000px;
-    top: 0;
-    left: 0;
-    transition: transform 0.25s;
-    ul {
-        // border: 1px solid orange;
+    #images_wrapper {
+        position: fixed;
+        z-index: -1;
         height: 100%;
-        display: flex;
-        li {
+        width: 12000px;
+        top: 0;
+        left: 0;
+        transition: transform 0.25s;
+        ul {
             // border: 1px solid orange;
-            width: 90vw;
             height: 100%;
-            transition: transform 2s;
-            img {
-                width: 80%;
-                height: auto;
+            display: flex;
+            li {
+                // border: 1px solid orange;
+                width: 90vw;
+                height: 100%;
+                transition: transform 2s;
+                img {
+                    width: 60%;
+                    height: auto;
+                }
             }
         }
     }

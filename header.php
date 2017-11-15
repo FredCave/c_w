@@ -44,4 +44,4 @@
 
 </head>
 
-<body>
+<body <?php // echo get_bg_colour(); ?>>

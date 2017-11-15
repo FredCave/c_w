@@ -54,48 +54,198 @@ table {
 	FONTS
 
 ****************************************/
+@font-face {
+  font-family: 'Suisse';
+  src: url("assets/fonts/suisseworks-book-webfont.woff2") format("woff2"), url("assets/fonts/suisseworks-book-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 /****************************************
 
 	GENERAL
 
 ****************************************/
-/* line 27, style.scss */
+/* line 33, style.scss */
 html, body {
-  font-family: "Suisse Works";
+  font-family: "Suisse", "Suisse Works", Times, "Times New Roman", serif;
   font-size: 1.8em;
   line-height: 1.35;
   padding-bottom: 80px;
+  background-color: black;
+  color: white;
 }
-/* line 33, style.scss */
-html #text_wrapper div, body #text_wrapper div {
+@media (max-width: 1440px) {
+  /* line 33, style.scss */
+  html, body {
+    font-size: 3.33vw;
+  }
+}
+@media (max-width: 1024px) {
+  /* line 33, style.scss */
+  html, body {
+    font-size: 1.3em;
+  }
+}
+
+/* line 51, style.scss */
+#version_one {
+  width: 100%;
+  height: 100%;
+}
+/* line 55, style.scss */
+#version_one #text_wrapper {
+  position: relative;
+  width: 50%;
+}
+@media (max-width: 660px) {
+  /* line 55, style.scss */
+  #version_one #text_wrapper {
+    width: 100%;
+  }
+}
+/* line 61, style.scss */
+#version_one #text_wrapper div {
   margin: 36px;
   margin-bottom: 64px;
 }
-/* line 37, style.scss */
-html #text_wrapper div p, body #text_wrapper div p {
+@media (max-width: 660px) {
+  /* line 61, style.scss */
+  #version_one #text_wrapper div {
+    margin: 24px;
+  }
+}
+/* line 68, style.scss */
+#version_one #text_wrapper div p {
+  width: calc( 100% - 32px );
+}
+@media (max-width: 1248px) {
+  /* line 68, style.scss */
+  #version_one #text_wrapper div p {
+    width: 100%;
+  }
+}
+/* line 76, style.scss */
+#version_one #text_wrapper div.small_text {
+  width: calc( 100% - 72px );
+  font-size: 0.67em;
+}
+@media (max-width: 660px) {
+  /* line 76, style.scss */
+  #version_one #text_wrapper div.small_text {
+    width: calc( 100% - 48px );
+  }
+}
+/* line 82, style.scss */
+#version_one #text_wrapper div.small_text p {
+  text-indent: 64px;
+}
+/* line 85, style.scss */
+#version_one #text_wrapper div.small_text p:first-child {
+  text-indent: 0;
+}
+/* line 89, style.scss */
+#version_one #text_wrapper a {
+  color: white;
+  text-decoration: none;
+}
+/* line 94, style.scss */
+#version_one #images_wrapper {
+  position: fixed;
+  z-index: 0;
+  height: 100vh;
+  width: 50%;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  cursor: none;
+}
+@media (max-width: 660px) {
+  /* line 94, style.scss */
+  #version_one #images_wrapper {
+    display: none;
+  }
+}
+/* line 107, style.scss */
+#version_one #images_wrapper ul {
+  height: 100vh;
+  width: 100%;
+}
+/* line 110, style.scss */
+#version_one #images_wrapper ul li {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  text-align: center;
+  opacity: 0;
+  transition: left 1s;
+  overflow: hidden;
+}
+/* line 125, style.scss */
+#version_one #images_wrapper ul li img {
+  position: relative;
+  width: auto;
+  height: 120%;
+  margin-top: -10%;
+  margin-left: -25%;
+}
+/* line 135, style.scss */
+#version_one #images_wrapper ul li.visible {
+  opacity: 1;
+  z-index: 99;
+}
+/* line 139, style.scss */
+#version_one #images_wrapper ul li.next_in_line {
+  opacity: 1;
+}
+/* line 143, style.scss */
+#version_one #images_wrapper .cursor {
+  position: fixed;
+  z-index: 99;
+  top: -100px;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  mix-blend-mode: difference;
+}
+/* line 152, style.scss */
+#version_one #images_wrapper .cursor img {
+  width: 100%;
+  height: 100%;
+  margin-top: -32px;
+  margin-left: -32px;
+}
+
+/* line 165, style.scss */
+#version_two #text_wrapper div {
+  margin: 36px;
+  margin-bottom: 64px;
+}
+/* line 169, style.scss */
+#version_two #text_wrapper div p {
   width: calc( 100% - 72px );
 }
-/* line 41, style.scss */
-html #text_wrapper div.small_text, body #text_wrapper div.small_text {
+/* line 173, style.scss */
+#version_two #text_wrapper div.small_text {
   width: calc( 50% + 32px );
   font-size: 0.67em;
 }
-/* line 44, style.scss */
-html #text_wrapper div.small_text p, body #text_wrapper div.small_text p {
+/* line 176, style.scss */
+#version_two #text_wrapper div.small_text p {
   text-indent: 64px;
 }
-/* line 47, style.scss */
-html #text_wrapper div.small_text p:first-child, body #text_wrapper div.small_text p:first-child {
+/* line 179, style.scss */
+#version_two #text_wrapper div.small_text p:first-child {
   text-indent: 0;
 }
-/* line 51, style.scss */
-html #text_wrapper a, body #text_wrapper a {
+/* line 183, style.scss */
+#version_two #text_wrapper a {
   color: black;
   text-decoration: none;
 }
-
-/* line 58, style.scss */
-#images_wrapper {
+/* line 188, style.scss */
+#version_two #images_wrapper {
   position: fixed;
   z-index: -1;
   height: 100%;
@@ -104,19 +254,19 @@ html #text_wrapper a, body #text_wrapper a {
   left: 0;
   transition: transform 0.25s;
 }
-/* line 66, style.scss */
-#images_wrapper ul {
+/* line 196, style.scss */
+#version_two #images_wrapper ul {
   height: 100%;
   display: flex;
 }
-/* line 70, style.scss */
-#images_wrapper ul li {
+/* line 200, style.scss */
+#version_two #images_wrapper ul li {
   width: 90vw;
   height: 100%;
   transition: transform 2s;
 }
-/* line 75, style.scss */
-#images_wrapper ul li img {
-  width: 80%;
+/* line 205, style.scss */
+#version_two #images_wrapper ul li img {
+  width: 60%;
   height: auto;
 }
